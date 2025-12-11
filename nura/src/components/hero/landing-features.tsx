@@ -1,0 +1,92 @@
+"use client";
+
+import {
+  Zap,
+  Lock,
+  ClipboardCheck,
+  MessageCircle,
+  TrendingUp,
+  Building2,
+} from "lucide-react";
+import { Container } from "../common/container";
+
+const features = [
+  {
+    id: "instant-ai-analysis",
+    title: "Instant AI Analysis",
+    icon: Zap,
+    description:
+      "Powered by Random Forest & Semi-Supervised Learning algorithms to detect patterns invisible to the human eye.",
+  },
+  {
+    id: "anonymous-privacy",
+    title: "100% Anonymous",
+    icon: Lock,
+    description:
+      "We don't ask for your name or ID to start. Your data is processed securely and your privacy is our priority.",
+  },
+  {
+    id: "treatment-recommendations",
+    title: "Treatment Recommendations",
+    icon: ClipboardCheck,
+    description:
+      "Don't just get a label. Get a clear 'Yes/No' recommendation on whether you should seek professional treatment.",
+  },
+  {
+    id: "real-time-support",
+    title: "Real-Time Support",
+    icon: MessageCircle,
+    description:
+      "Feeling overwhelmed? Connect instantly with our support chat or find resources near you immediately.",
+  },
+  {
+    id: "progress-tracking",
+    title: "Progress Tracking",
+    icon: TrendingUp,
+    description:
+      "Save your history. Watch how your mental health evolves over time with our secure user dashboard.",
+  },
+  {
+    id: "corporate-ready",
+    title: "Corporate Ready",
+    icon: Building2,
+    description:
+      "Designed for individuals and workplaces. Assess employee burnout risk before it becomes a crisis.",
+  },
+];
+
+export const LandingFeatures = () => {
+  return (
+    <section className='py-12 md:py-20'>
+      <div className='bg-linear-to-b from-black/20 to-transparent backdrop-blur-xs pt-10 pb-24'>
+        <Container className='container mx-auto px-4'>
+          <h2 className='text-2xl sm:text-3xl md:text-4xl text-center font-semibold tracking-tight text-transparent bg-linear-to-br from-blue-50 to-slate-300 bg-clip-text py-5 text-shadow-xs'>
+            Why Trust Our Diagnostics?
+          </h2>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-14 mt-10'>
+            {features.map((feature) => (
+              <div
+                key={feature.id}
+                className='p-6 border relative border-zinc-800 rounded-none shadow-sm hover:shadow-md transition-shadow bg-linear-to-br from-zinc-900/10 via-transparent to-neutral-900/20 backdrop-blur-sm text-card-foreground max-w-sm mx-auto md:max-w-md'
+              >
+                <span className='size-3 absolute border-b-[0.5px] border-r-[0.5px] border-slate-400/40 -left-3 -top-3'></span>
+                <span className='size-3 absolute border-l-[0.5px] border-b-[0.5px] border-slate-400/40 -right-3 -top-3'></span>
+                <span className='size-3 absolute border-t-[0.5px] border-r-[0.5px] border-slate-400/40 -left-3 -bottom-3'></span>
+                <span className='size-3 absolute border-t-[0.5px] border-l-[0.5px] border-slate-400/40 -right-3 -bottom-3'></span>
+                <div className='flex flex-row gap-x-3 items-center text-transparent bg-linear-to-r from-cyan-500 to-slate-300 via-teal-300 bg-clip-text'>
+                  <feature.icon className='size-7 mb-4 text-cyan-400' />
+                  <h3 className='text-lg md:text-xl font-semibold mb-2 w-fit'>
+                    {feature.title}
+                  </h3>
+                </div>
+                <p className='text-zinc-300 text-sm ml-10'>
+                  {feature.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </div>
+    </section>
+  );
+};

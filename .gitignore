@@ -1,0 +1,86 @@
+# PYTHON (mental-health-diagnostics)
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+env/
+venv/
+.env/
+
+# Data (ignore generated or large files)
+data/processed/
+predictions.csv
+*.csv
+# Allow raw CSVs if needed
+!data/raw/*.csv
+
+# Model files
+models/*.pkl
+*.pkl
+
+# Self-readable docs (optional)
+learning.md
+
+
+# NEXT.JS (nura)
+
+# Dependencies
+node_modules/
+.pnpm-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Yarn/PNPM workspace junk
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Testing
+coverage/
+
+# Next.js build output
+.nxt/
+.next/
+out/
+
+# Production build
+build/
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# ENV FILES
+
+.env*
+!*.example   # allow .env.example
+
+
+# EDITOR / OS FILES
+
+.vscode/
+.DS_Store
+Thumbs.db
+
+
+# VERCEL DEPLOYMENT
+
+.vercel
+
+
+# TYPESCRIPT
+
+*.tsbuildinfo
+next-env.d.ts
