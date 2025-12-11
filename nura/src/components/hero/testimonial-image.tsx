@@ -46,12 +46,12 @@ export const TestimonialImage = () => {
   };
 
   return (
-    <div className='relative w-full max-w-md mx-auto'>
+    <div id='tryitout' className='relative w-full max-w-md mx-auto mt-10'>
       {/* Decorative background elements */}
       <div className='absolute -top-10 -left-10 w-32 h-32 bg-primary/20 rounded-full blur-3xl' />
       <div className='absolute -bottom-10 -right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl' />
 
-      <Card className='relative overflow-hidden border-primary/10 shadow-2xl backdrop-blur-sm bg-card/95'>
+      <Card className='relative overflow-hidden border-primary/10 shadow-sm dark:shadow-xl backdrop-blur-sm bg-card/95'>
         <CardHeader>
           <div className='flex items-center gap-2 mb-1'>
             <div className='p-2 rounded-lg bg-primary/10 text-primary'>

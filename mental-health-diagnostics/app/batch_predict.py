@@ -24,7 +24,7 @@ def batch_predict(input_file='../data/unlabeled_data.csv', output_file='../data/
 
     # Ensure all feature columns are present
     # If the CSV is missing some columns that were in training, we need to handle it.
-    # For this demo, we assume the CSV has the correct columns.
+    # assuming the csv is good for now
     
     X = df.copy()
     

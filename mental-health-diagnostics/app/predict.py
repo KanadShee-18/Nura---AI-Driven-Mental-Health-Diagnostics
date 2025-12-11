@@ -6,8 +6,7 @@ from data_utils import clean_gender
 def get_user_input(feature_cols, encoders):
     input_data = {}
     print("\nPlease answer the following questions to help us predict the condition:")
-    
-    # Mapping technical column names to user-friendly questions
+
     questions = {
         'Age': "What is your age?",
         'Gender': "What is your gender? (Male/Female/Other)",
@@ -59,7 +58,7 @@ def predict():
     # 2. Handle Age
     if 'Age' in df.columns:
         df['Age'] = pd.to_numeric(df['Age'], errors='coerce')
-        # Fill with median if invalid (we don't have the median saved, so we'll use a reasonable default or just 30)
+        # Fill with median if invalid (using 30 as default)
         df['Age'] = df['Age'].fillna(30)
         
     # 3. Encode categorical
@@ -68,12 +67,6 @@ def predict():
             # Handle unseen labels
             df[col] = df[col].fillna('Unknown')
             df[col] = df[col].apply(lambda x: x if x in le.classes_ else 'Unknown')
-            
-            # If 'Unknown' is not in classes, we have a problem. 
-            # We should have ensured 'Unknown' is in classes during training or have a fallback.
-            # In data_utils.py we filled NaNs with 'Unknown' before fitting, so 'Unknown' should be in classes if there were NaNs.
-            # If there were no NaNs, 'Unknown' might not be there.
-            # Fallback: map to the first class index (0) or mode.
             
             known_labels = set(le.classes_)
             
@@ -89,19 +82,15 @@ def predict():
             
             df[col] = df[col].apply(safe_transform)
             
-    # Ensure all columns are present and in correct order
-    # (They should be since we iterated feature_cols)
+    # maintaning correct order
     X = df[feature_cols]
     
-    # Predict
     print("\n--- Prediction Results ---")
     
-    # Condition
     cond_idx = condition_model.predict(X)[0]
     condition = le_condition.inverse_transform([cond_idx])[0]
     print(f"Predicted Condition: {condition}")
     
-    # Treatment
     treat_idx = treatment_model.predict(X)[0]
     treatment = le_treatment.inverse_transform([treat_idx])[0]
     print(f"Treatment Needed: {treatment}")

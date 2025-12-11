@@ -16,20 +16,25 @@ const NavLinks = [
     id: "nav-features",
   },
   {
-    title: "Products",
-    href: "/#products",
-    id: "nav-products",
+    title: "Try it Out",
+    href: "/#tryitout",
+    id: "nav-tryitout",
   },
-  {
-    title: "Socials",
-    href: "/#footer",
-    id: "nav-socials",
-  },
-  {
-    title: "Pricing",
-    href: "/#pricing",
-    id: "nav-pricing",
-  },
+  // {
+  //   title: "Products",
+  //   href: "/#products",
+  //   id: "nav-products",
+  // },
+  // {
+  //   title: "Socials",
+  //   href: "/#footer",
+  //   id: "nav-socials",
+  // },
+  // {
+  //   title: "Pricing",
+  //   href: "/#pricing",
+  //   id: "nav-pricing",
+  // },
 ];
 
 const AuthNavLinks = [

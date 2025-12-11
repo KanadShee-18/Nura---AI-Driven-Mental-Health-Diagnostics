@@ -57,29 +57,29 @@ const features = [
 
 export const LandingFeatures = () => {
   return (
-    <section className='py-12 md:py-20'>
-      <div className='bg-linear-to-b from-black/20 to-transparent backdrop-blur-xs pt-10 pb-24'>
+    <section id='features' className='py-12 md:py-20'>
+      <div className='bg-linear-to-b from-white/40  dark:from-black/20 to-transparent backdrop-blur-xs pt-10 pb-24'>
         <Container className='container mx-auto px-4'>
-          <h2 className='text-2xl sm:text-3xl md:text-4xl text-center font-semibold tracking-tight text-transparent bg-linear-to-br from-blue-50 to-slate-300 bg-clip-text py-5 text-shadow-xs'>
+          <h2 className='text-2xl sm:text-3xl md:text-4xl text-center font-semibold tracking-tight text-transparent bg-linear-to-br dark:from-blue-50 from-blue-500 via-cyan-500 to-teal-500 dark:to-slate-300 bg-clip-text py-5 text-shadow-xs'>
             Why Trust Our Diagnostics?
           </h2>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-14 mt-10'>
             {features.map((feature) => (
               <div
                 key={feature.id}
-                className='p-6 border relative border-zinc-800 rounded-none shadow-sm hover:shadow-md transition-shadow bg-linear-to-br from-zinc-900/10 via-transparent to-neutral-900/20 backdrop-blur-sm text-card-foreground max-w-sm mx-auto md:max-w-md'
+                className='p-6 border relative dark:border-zinc-800 border-zinc-300 rounded-none shadow-inner shadow-black/10 dark:shadow-white/5 bg-linear-to-br from-zinc-200/10 dark:from-zinc-900/10 via-transparent to-neutral-400/20 dark:to-neutral-900/20 backdrop-blur-sm text-card-foreground max-w-sm mx-auto md:max-w-md transition-all duration-300 ease-in-out opacity-70 hover:opacity-100'
               >
-                <span className='size-3 absolute border-b-[0.5px] border-r-[0.5px] border-slate-400/40 -left-3 -top-3'></span>
-                <span className='size-3 absolute border-l-[0.5px] border-b-[0.5px] border-slate-400/40 -right-3 -top-3'></span>
-                <span className='size-3 absolute border-t-[0.5px] border-r-[0.5px] border-slate-400/40 -left-3 -bottom-3'></span>
-                <span className='size-3 absolute border-t-[0.5px] border-l-[0.5px] border-slate-400/40 -right-3 -bottom-3'></span>
-                <div className='flex flex-row gap-x-3 items-center text-transparent bg-linear-to-r from-cyan-500 to-slate-300 via-teal-300 bg-clip-text'>
-                  <feature.icon className='size-7 mb-4 text-cyan-400' />
+                <span className='size-3 absolute border-b-[0.5px] border-r-[0.5px] border-slate-500/40 dark:border-slate-400/40 -left-3 -top-3'></span>
+                <span className='size-3 absolute border-l-[0.5px] border-b-[0.5px] border-slate-500/40 dark:border-slate-400/40 -right-3 -top-3'></span>
+                <span className='size-3 absolute border-t-[0.5px] border-r-[0.5px] border-slate-500/40 dark:border-slate-400/40 -left-3 -bottom-3'></span>
+                <span className='size-3 absolute border-t-[0.5px] border-l-[0.5px] border-slate-500/40 dark:border-slate-400/40 -right-3 -bottom-3'></span>
+                <div className='flex flex-row gap-x-3 items-center text-transparent bg-linear-to-r from-cyan-500 dark:to-slate-300 to-slate-500 dark:via-teal-300 via-teal-500 bg-clip-text'>
+                  <feature.icon className='size-7 mb-4 dark:text-cyan-400 text-cyan-500' />
                   <h3 className='text-lg md:text-xl font-semibold mb-2 w-fit'>
                     {feature.title}
                   </h3>
                 </div>
-                <p className='text-zinc-300 text-sm ml-10'>
+                <p className='dark:text-zinc-300 text-zinc-500 font-medium text-sm ml-10'>
                   {feature.description}
                 </p>
               </div>

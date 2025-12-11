@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export const signUpSchema = z
   .object({
@@ -199,7 +200,7 @@ export const RegisterForm = () => {
             <p className='text-center text-sm font-medium text-muted-foreground'>
               Or, Continue With
             </p>
-            <CardFooter>
+            <CardFooter className='flex flex-col'>
               <div className='w-full flex items-center gap-2.5'>
                 <Button variant={"outline"} className='flex-1'>
                   <FcGoogle />
@@ -209,6 +210,14 @@ export const RegisterForm = () => {
                   <FaGithub />
                   GitHub
                 </Button>
+              </div>
+              <div className='w-fit ml-auto text-sm mt-5'>
+                <Link
+                  className='ml-auto hover:text-indigo-400 hover:underline'
+                  href={"/sign-in"}
+                >
+                  Already part of Nura?
+                </Link>
               </div>
             </CardFooter>
           </Card>

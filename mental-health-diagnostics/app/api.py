@@ -6,7 +6,7 @@ from data_utils import clean_gender
 
 app = FastAPI(title="Mental Health Diagnostics API")
 
-# Load models and encoders once at startup
+# loading all the models here so we don't have to do it every time
 print("Loading models...")
 try:
     condition_model = joblib.load('../models/condition_model.pkl')
@@ -18,11 +18,11 @@ try:
     print("Models loaded successfully.")
 except FileNotFoundError:
     print("Error: Models not found. Please run train_model.py first.")
-    # We don't raise an error here to allow the app to start, 
-    # but predictions will fail if models aren't loaded.
+    # just printing error if models are missing, hope it works lol
+    # predictions will fail if models aren't loaded though
 
 class PatientData(BaseModel):
-    Age: str  # Receiving as string to handle potential non-numeric input gracefully
+    Age: str  # using string for age just in case
     Gender: str
     work_interfere: str
     family_history: str
@@ -42,31 +42,31 @@ def read_root():
 
 @app.post("/predict")
 def predict_condition(data: PatientData):
-    # Convert Pydantic model to dict
+    # making it a dict
     input_data = data.model_dump()
     
     # Create DataFrame
     df = pd.DataFrame([input_data])
     
-    # --- Preprocessing (Same as predict.py) ---
+    # --- doing the same preprocessing stuff as before ---
     
-    # 1. Clean Gender
+    # 1. fixing gender inputs
     if 'Gender' in df.columns:
         df['Gender'] = df['Gender'].apply(clean_gender)
         
-    # 2. Handle Age
+    # 2. fixing age
     if 'Age' in df.columns:
         df['Age'] = pd.to_numeric(df['Age'], errors='coerce')
         # Fill with default if invalid
         df['Age'] = df['Age'].fillna(30)
         
-    # 3. Encode categorical
+    # 3. encoding the categories
     for col, le in encoders.items():
         if col in df.columns:
-            # Handle unseen labels
+            # if we haven't seen this before, mark as unknown
             df[col] = df[col].fillna('Unknown')
             
-            # Safe transform helper
+            # helper function to avoid crashes
             known_labels = set(le.classes_)
             def safe_transform(val):
                 if val in known_labels:
@@ -78,7 +78,7 @@ def predict_condition(data: PatientData):
             
             df[col] = df[col].apply(safe_transform)
 
-    # Ensure columns are in the correct order
+    # making sure columns are right
     # Add missing columns if any (though Pydantic ensures we get what we expect)
     for col in feature_cols:
         if col not in df.columns:
@@ -86,7 +86,7 @@ def predict_condition(data: PatientData):
             
     X = df[feature_cols]
     
-    # --- Prediction ---
+    # --- time to predict! ---
     try:
         # Condition
         cond_idx = condition_model.predict(X)[0]

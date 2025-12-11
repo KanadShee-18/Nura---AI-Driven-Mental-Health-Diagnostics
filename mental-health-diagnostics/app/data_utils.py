@@ -19,14 +19,13 @@ def preprocess_data(filepath, encoders_path='../models/encoders.pkl', is_trainin
     df['Gender'] = df['Gender'].apply(clean_gender)
     
     # Handle missing values (simple imputation)
-    # For categorical, fill with mode or 'Unknown'
-    # For numerical (Age), fill with median
+    # filling categorical with unknown and numbers with median
     
     # Fix Age outliers
     df['Age'] = pd.to_numeric(df['Age'], errors='coerce')
     median_age = df['Age'].median()
     df['Age'] = df['Age'].fillna(median_age)
-    # Filter unrealistic ages
+    # removing weird ages
     df.loc[(df['Age'] < 18) | (df['Age'] > 100), 'Age'] = median_age
     
     # Columns to encode
@@ -60,9 +59,7 @@ def preprocess_data(filepath, encoders_path='../models/encoders.pkl', is_trainin
                 # Handle unseen labels
                 df[col] = df[col].map(lambda s: s if s in le.classes_ else 'Unknown')
                 # If 'Unknown' was not in training, we might have an issue. 
-                # For simplicity, we map to the first class or a specific 'Unknown' class if it existed.
-                # A robust way is to fit on data + 'Unknown' initially.
-                # Here we will just use transform and handle errors or use a custom safe transform.
+                # just mapping to unknown or something safe
                 
                 # Safe transform
                 known_labels = set(le.classes_)

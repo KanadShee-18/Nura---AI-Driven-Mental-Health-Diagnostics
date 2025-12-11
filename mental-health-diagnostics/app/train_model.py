@@ -1,11 +1,13 @@
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import LabelEncoder
 from sklearn.semi_supervised import SelfTrainingClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, accuracy_score
 import joblib
 from data_utils import preprocess_data
+
 
 def train():
     print("Loading and preprocessing data...")
@@ -31,14 +33,13 @@ def train():
     joblib.dump(le_condition, '../models/le_condition.pkl')
     joblib.dump(le_treatment, '../models/le_treatment.pkl')
     
-    # --- Model 1: Condition (Semi-Supervised) ---
+    # training the first model for condition
     print("\nTraining Condition Model (Semi-Supervised)...")
     
-    # Split into train and test
+    # splitting data
     X_train, X_test, y_train, y_test = train_test_split(X, y_condition_encoded, test_size=0.2, random_state=42)
     
-    # Simulate unlabeled data in training set
-    # Mask 50% of labels as -1
+    # pretending some data is unlabeled to test semi-supervised learning
     rng = np.random.RandomState(42)
     random_unlabeled_points = rng.rand(len(y_train)) < 0.5
     y_train_mixed = np.copy(y_train)
@@ -47,26 +48,26 @@ def train():
     print(f"Labeled samples: {np.sum(y_train_mixed != -1)}")
     print(f"Unlabeled samples: {np.sum(y_train_mixed == -1)}")
     
-    # Base estimator
-    rf = RandomForestClassifier(n_estimators=100, random_state=42)
+    # using random forest
+    rf = RandomForestClassifier(n_estimators=200, random_state=42)
     
-    # Self-training classifier
-    # Note: 'base_estimator' was renamed to 'estimator' in newer scikit-learn versions
+    # self training stuff
+    # had to change base_estimator to estimator because sklearn updated
     st_clf = SelfTrainingClassifier(estimator=rf, criterion='k_best', k_best=10, max_iter=10)
     st_clf.fit(X_train, y_train_mixed)
     
-    # Evaluate
+    # checking how good it is
     y_pred = st_clf.predict(X_test)
     print("Condition Model Accuracy:", accuracy_score(y_test, y_pred))
     print(classification_report(y_test, y_pred, target_names=le_condition.classes_, zero_division=0))
     
-    # Save model
+    # saving it for later
     joblib.dump(st_clf, '../models/condition_model.pkl')
     
-    # --- Model 2: Treatment (Supervised for simplicity, or Semi-Supervised) ---
+    # training the treatment model now
     print("\nTraining Treatment Model...")
-    # We can use the same split logic or just train on full labeled data for treatment
-    # Let's just do standard supervised for treatment to ensure high reliability on this critical field
+    # just doing normal supervised learning here
+    # keeping it simple for treatment prediction
     X_train_t, X_test_t, y_train_t, y_test_t = train_test_split(X, y_treatment_encoded, test_size=0.2, random_state=42)
     
     rf_treatment = RandomForestClassifier(n_estimators=100, random_state=42)
@@ -80,7 +81,6 @@ def train():
     
     print("\nModels and encoders saved successfully.")
 
-from sklearn.preprocessing import LabelEncoder
 
 if __name__ == "__main__":
     train()
