@@ -62,7 +62,7 @@ def train():
     print(classification_report(y_test, y_pred, target_names=le_condition.classes_, zero_division=0))
     
     # saving it for later
-    joblib.dump(st_clf, '../models/condition_model.pkl')
+    joblib.dump(st_clf, os.path.join(MODELS_DIR, 'condition_model.pkl'))
     
     # training the treatment model now
     print("\nTraining Treatment Model...")
@@ -77,7 +77,7 @@ def train():
     print("Treatment Model Accuracy:", accuracy_score(y_test_t, y_pred_t))
     print(classification_report(y_test_t, y_pred_t, target_names=le_treatment.classes_, zero_division=0))
     
-    joblib.dump(rf_treatment, '../models/treatment_model.pkl')
+    joblib.dump(rf_treatment, os.path.join(MODELS_DIR, 'treatment_model.pkl'))
     
     print("\nModels and encoders saved successfully.")
 

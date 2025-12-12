@@ -1,25 +1,33 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Header
 from pydantic import BaseModel
 import pandas as pd
 import joblib
+import os
+from dotenv import load_dotenv
 from data_utils import clean_gender
 
+# Load environment variables
+load_dotenv()
+
 app = FastAPI(title="Mental Health Diagnostics API")
+
+# Get the directory of the current file (api.py)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Path to models directory
+MODELS_DIR = os.path.join(BASE_DIR, '..', 'models')
 
 # loading all the models here so we don't have to do it every time
 print("Loading models...")
 try:
-    condition_model = joblib.load('../models/condition_model.pkl')
-    treatment_model = joblib.load('../models/treatment_model.pkl')
-    le_condition = joblib.load('../models/le_condition.pkl')
-    le_treatment = joblib.load('../models/le_treatment.pkl')
-    encoders = joblib.load('../models/encoders.pkl')
-    feature_cols = joblib.load('../models/feature_cols.pkl')
+    condition_model = joblib.load(os.path.join(MODELS_DIR, 'condition_model.pkl'))
+    treatment_model = joblib.load(os.path.join(MODELS_DIR, 'treatment_model.pkl'))
+    le_condition = joblib.load(os.path.join(MODELS_DIR, 'le_condition.pkl'))
+    le_treatment = joblib.load(os.path.join(MODELS_DIR, 'le_treatment.pkl'))
+    encoders = joblib.load(os.path.join(MODELS_DIR, 'encoders.pkl'))
+    feature_cols = joblib.load(os.path.join(MODELS_DIR, 'feature_cols.pkl'))
     print("Models loaded successfully.")
 except FileNotFoundError:
     print("Error: Models not found. Please run train_model.py first.")
-    # just printing error if models are missing, hope it works lol
-    # predictions will fail if models aren't loaded though
 
 class PatientData(BaseModel):
     Age: str  # using string for age just in case
@@ -41,7 +49,12 @@ def read_root():
     return {"message": "Mental Health Diagnostics API is running"}
 
 @app.post("/predict")
-def predict_condition(data: PatientData):
+def predict_condition(data: PatientData, x_api_key: str = Header(None)):
+    # Security check
+    secret_key = os.getenv("API_SECRET_KEY")
+    if secret_key and x_api_key != secret_key:
+        raise HTTPException(status_code=403, detail="Unauthorized access")
+        
     # making it a dict
     input_data = data.model_dump()
     
