@@ -40,8 +40,8 @@ const AuthNavLinks = [
 export const MobileNavbar = ({ presence }: { presence: boolean }) => {
   const [openSidebar, setOpenSidebar] = useState<boolean>(false);
 
-  const handleSignOut = () => {
-    authClient.signOut();
+  const handleSignOut = async () => {
+    await authClient.signOut();
     toast.success("You've logged out successfully!");
     window.location.replace("/");
   };
@@ -142,8 +142,8 @@ export const MobileNavbar = ({ presence }: { presence: boolean }) => {
 };
 
 export const DesktopNavbar = ({ presence }: { presence: boolean }) => {
-  const handleSignOut = () => {
-    authClient.signOut();
+  const handleSignOut = async () => {
+    await authClient.signOut();
     toast.success("You've logged out successfully!");
     window.location.replace("/");
   };

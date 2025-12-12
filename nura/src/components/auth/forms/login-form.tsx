@@ -77,7 +77,7 @@ export const LoginForm = () => {
       setErrMesg(error.message ?? "Something went wrong!");
     } else {
       toast.success("Signed In Successfully!");
-      router.push("/dashboard");
+      window.location.replace("/dashboard");
     }
   };
 
