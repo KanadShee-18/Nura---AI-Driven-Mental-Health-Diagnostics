@@ -70,3 +70,33 @@ def preprocess_data(filepath, encoders_path='../models/encoders.pkl', is_trainin
         joblib.dump(encoders, encoders_path)
         
     return df, encoders
+
+def preprocess_input(df, encoders):
+    # 1. Clean Gender
+    if 'Gender' in df.columns:
+        df['Gender'] = df['Gender'].apply(clean_gender)
+        
+    # 2. Handle Age
+    if 'Age' in df.columns:
+        df['Age'] = pd.to_numeric(df['Age'], errors='coerce')
+        # Fill with default if invalid
+        df['Age'] = df['Age'].fillna(30)
+        
+    # 3. Encode categorical
+    for col, le in encoders.items():
+        if col in df.columns:
+            # Handle unseen labels
+            df[col] = df[col].fillna('Unknown')
+            
+            # Safe transform helper
+            known_labels = set(le.classes_)
+            def safe_transform(val):
+                if val in known_labels:
+                    return le.transform([val])[0]
+                else:
+                    if 'Unknown' in known_labels:
+                        return le.transform(['Unknown'])[0]
+                    return 0 # Fallback
+            
+            df[col] = df[col].apply(safe_transform)
+    return df

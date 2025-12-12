@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
 import joblib
-from data_utils import clean_gender
+import os
+from data_utils import clean_gender, preprocess_input
 
 def get_user_input(feature_cols, encoders):
     input_data = {}
@@ -32,14 +33,18 @@ def get_user_input(feature_cols, encoders):
     return input_data
 
 def predict():
+    # Get base dir
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    MODELS_DIR = os.path.join(BASE_DIR, '..', 'models')
+
     print("Loading models...")
     try:
-        condition_model = joblib.load('../models/condition_model.pkl')
-        treatment_model = joblib.load('../models/treatment_model.pkl')
-        le_condition = joblib.load('../models/le_condition.pkl')
-        le_treatment = joblib.load('../models/le_treatment.pkl')
-        encoders = joblib.load('../models/encoders.pkl')
-        feature_cols = joblib.load('../models/feature_cols.pkl')
+        condition_model = joblib.load(os.path.join(MODELS_DIR, 'condition_model.pkl'))
+        treatment_model = joblib.load(os.path.join(MODELS_DIR, 'treatment_model.pkl'))
+        le_condition = joblib.load(os.path.join(MODELS_DIR, 'le_condition.pkl'))
+        le_treatment = joblib.load(os.path.join(MODELS_DIR, 'le_treatment.pkl'))
+        encoders = joblib.load(os.path.join(MODELS_DIR, 'encoders.pkl'))
+        feature_cols = joblib.load(os.path.join(MODELS_DIR, 'feature_cols.pkl'))
     except FileNotFoundError:
         print("Models not found. Please run train_model.py first.")
         return
@@ -51,36 +56,7 @@ def predict():
     df = pd.DataFrame([user_input])
     
     # Preprocess
-    # 1. Clean Gender
-    if 'Gender' in df.columns:
-        df['Gender'] = df['Gender'].apply(clean_gender)
-        
-    # 2. Handle Age
-    if 'Age' in df.columns:
-        df['Age'] = pd.to_numeric(df['Age'], errors='coerce')
-        # Fill with median if invalid (using 30 as default)
-        df['Age'] = df['Age'].fillna(30)
-        
-    # 3. Encode categorical
-    for col, le in encoders.items():
-        if col in df.columns:
-            # Handle unseen labels
-            df[col] = df[col].fillna('Unknown')
-            df[col] = df[col].apply(lambda x: x if x in le.classes_ else 'Unknown')
-            
-            known_labels = set(le.classes_)
-            
-            def safe_transform(val):
-                if val in known_labels:
-                    return le.transform([val])[0]
-                else:
-                    # Try 'Unknown'
-                    if 'Unknown' in known_labels:
-                        return le.transform(['Unknown'])[0]
-                    # Else return first class
-                    return 0
-            
-            df[col] = df[col].apply(safe_transform)
+    df = preprocess_input(df, encoders)
             
     # maintaning correct order
     X = df[feature_cols]

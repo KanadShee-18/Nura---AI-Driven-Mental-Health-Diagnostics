@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import os
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
 from sklearn.semi_supervised import SelfTrainingClassifier
@@ -10,15 +11,20 @@ from data_utils import preprocess_data
 
 
 def train():
+    # Get base dir
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    DATA_DIR = os.path.join(BASE_DIR, '..', 'data')
+    MODELS_DIR = os.path.join(BASE_DIR, '..', 'models')
+
     print("Loading and preprocessing data...")
-    df, encoders = preprocess_data('../data/modified_dataset_with_condition.csv', encoders_path='../models/encoders.pkl', is_training=True)
+    df, encoders = preprocess_data(os.path.join(DATA_DIR, 'modified_dataset_with_condition.csv'), encoders_path=os.path.join(MODELS_DIR, 'encoders.pkl'), is_training=True)
     
     # Define targets and features
     target_cols = ['condition', 'treatment']
     feature_cols = [col for col in df.columns if col not in target_cols]
     
     X = df[feature_cols]
-    joblib.dump(feature_cols, '../models/feature_cols.pkl')
+    joblib.dump(feature_cols, os.path.join(MODELS_DIR, 'feature_cols.pkl'))
     y_condition = df['condition']
     y_treatment = df['treatment']
     
@@ -30,8 +36,8 @@ def train():
     y_treatment_encoded = le_treatment.fit_transform(y_treatment)
     
     # Save target encoders
-    joblib.dump(le_condition, '../models/le_condition.pkl')
-    joblib.dump(le_treatment, '../models/le_treatment.pkl')
+    joblib.dump(le_condition, os.path.join(MODELS_DIR, 'le_condition.pkl'))
+    joblib.dump(le_treatment, os.path.join(MODELS_DIR, 'le_treatment.pkl'))
     
     # training the first model for condition
     print("\nTraining Condition Model (Semi-Supervised)...")

@@ -4,7 +4,7 @@ import pandas as pd
 import joblib
 import os
 from dotenv import load_dotenv
-from data_utils import clean_gender
+from data_utils import clean_gender, preprocess_input
 
 # Load environment variables
 load_dotenv()
@@ -62,34 +62,7 @@ def predict_condition(data: PatientData, x_api_key: str = Header(None)):
     df = pd.DataFrame([input_data])
     
     # --- doing the same preprocessing stuff as before ---
-    
-    # 1. fixing gender inputs
-    if 'Gender' in df.columns:
-        df['Gender'] = df['Gender'].apply(clean_gender)
-        
-    # 2. fixing age
-    if 'Age' in df.columns:
-        df['Age'] = pd.to_numeric(df['Age'], errors='coerce')
-        # Fill with default if invalid
-        df['Age'] = df['Age'].fillna(30)
-        
-    # 3. encoding the categories
-    for col, le in encoders.items():
-        if col in df.columns:
-            # if we haven't seen this before, mark as unknown
-            df[col] = df[col].fillna('Unknown')
-            
-            # helper function to avoid crashes
-            known_labels = set(le.classes_)
-            def safe_transform(val):
-                if val in known_labels:
-                    return le.transform([val])[0]
-                else:
-                    if 'Unknown' in known_labels:
-                        return le.transform(['Unknown'])[0]
-                    return 0 # Fallback
-            
-            df[col] = df[col].apply(safe_transform)
+    df = preprocess_input(df, encoders)
 
     # making sure columns are right
     # Add missing columns if any (though Pydantic ensures we get what we expect)
