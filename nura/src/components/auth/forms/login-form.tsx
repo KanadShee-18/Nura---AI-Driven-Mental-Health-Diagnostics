@@ -30,6 +30,9 @@ import {
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export const loginSchema = z.object({
   email: z.email({ error: "Please provide a valid email" }),
@@ -40,6 +43,10 @@ export const loginSchema = z.object({
 });
 
 export const LoginForm = () => {
+  const router = useRouter();
+
+  const [errMesg, setErrMesg] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -52,8 +59,26 @@ export const LoginForm = () => {
 
   const isPending = form.formState.isSubmitting;
 
-  const onFormSubmit = (values: z.infer<typeof loginSchema>) => {
-    if (!values) return;
+  const onFormSubmit = async (values: z.infer<typeof loginSchema>) => {
+    if (!values.email || !values.password) return;
+
+    setErrMesg(null);
+    setLoading(true);
+
+    const { error } = await authClient.signIn.email({
+      email: values.email,
+      password: values.password,
+    });
+
+    setLoading(false);
+    setErrMesg(null);
+
+    if (error) {
+      setErrMesg(error.message ?? "Something went wrong!");
+    } else {
+      toast.success("Signed In Successfully!");
+      router.push("/dashboard");
+    }
   };
 
   return (

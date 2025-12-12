@@ -1,6 +1,9 @@
 import { RegisterForm } from "@/components/auth/forms/register-form";
+import { requireUnAuth } from "@/lib/get-session";
 
-export default function SignUpPage() {
+export default async function SignUpPage() {
+  await requireUnAuth();
+
   return (
     <div>
       <RegisterForm />

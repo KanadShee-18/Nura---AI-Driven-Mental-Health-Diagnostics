@@ -31,6 +31,9 @@ import {
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export const signUpSchema = z
   .object({
@@ -51,9 +54,12 @@ export const signUpSchema = z
   });
 
 export const RegisterForm = () => {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
+
+  const [errMesg, setErrMesg] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
@@ -67,8 +73,25 @@ export const RegisterForm = () => {
 
   const isPending = form.formState.isSubmitting;
 
-  const onFormSubmit = (values: z.infer<typeof signUpSchema>) => {
-    if (!values) return;
+  const onFormSubmit = async (values: z.infer<typeof signUpSchema>) => {
+    if (!values.name || !values.password || !values.email) return;
+    if (values.password.trim() !== values.confirmPassword.trim()) return;
+
+    setErrMesg(null);
+    const { error } = await authClient.signUp.email({
+      name: values.name,
+      email: values.email,
+      password: values.password,
+      callbackURL: "/email-verify",
+    });
+
+    if (error) {
+      form.reset();
+      setErrMesg(error.message ?? "Something went wrong. Try again!");
+    } else {
+      toast.success("Signed Up Successfully!");
+      router.push("/dashboard");
+    }
   };
 
   return (
@@ -151,6 +174,7 @@ export const RegisterForm = () => {
                           <FormControl>
                             <Input
                               placeholder='Enter a strong password'
+                              type='password'
                               {...field}
                               disabled={isPending}
                               className='pl-10'
@@ -177,6 +201,7 @@ export const RegisterForm = () => {
 
                             <Input
                               placeholder='Revalidate your password'
+                              type='password'
                               {...field}
                               disabled={isPending}
                               className='pl-10 relative'
@@ -187,6 +212,11 @@ export const RegisterForm = () => {
                       </FormItem>
                     )}
                   />
+                  {errMesg && (
+                    <p className='w-full bg-destructive/10 rounded-md py-2 px-4 text-sm text-rose-300 shadow-lg'>
+                      {errMesg}
+                    </p>
+                  )}
                   <Button
                     disabled={isPending}
                     type='submit'
