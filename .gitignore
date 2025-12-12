@@ -19,8 +19,8 @@ predictions.csv
 !data/raw/*.csv
 
 # Model files
-models/*.pkl
-*.pkl
+# models/*.pkl
+# *.pkl
 
 # Self-readable docs (optional)
 learning.md
