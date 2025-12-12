@@ -22,8 +22,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import { Input } from "@/components/ui/input";
 import {
+  ChevronRightIcon,
   EyeIcon,
   EyeOffIcon,
+  LoaderIcon,
   LockKeyholeOpenIcon,
   MailIcon,
   UserIcon,
@@ -60,6 +62,7 @@ export const RegisterForm = () => {
     useState<boolean>(false);
 
   const [errMesg, setErrMesg] = useState<string | null>(null);
+  const [successMesg, setSuccessMesg] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
@@ -77,12 +80,13 @@ export const RegisterForm = () => {
     if (!values.name || !values.password || !values.email) return;
     if (values.password.trim() !== values.confirmPassword.trim()) return;
 
+    setSuccessMesg(null);
     setErrMesg(null);
     const { error } = await authClient.signUp.email({
       name: values.name,
       email: values.email,
       password: values.password,
-      callbackURL: "/email-verify",
+      callbackURL: "/email-verified",
     });
 
     if (error) {
@@ -90,7 +94,8 @@ export const RegisterForm = () => {
       setErrMesg(error.message ?? "Something went wrong. Try again!");
     } else {
       toast.success("Signed Up Successfully!");
-      router.push("/dashboard");
+      // router.push("/dashboard");
+      setSuccessMesg("Verification email sent successfully!");
     }
   };
 
@@ -217,12 +222,27 @@ export const RegisterForm = () => {
                       {errMesg}
                     </p>
                   )}
+                  {successMesg && (
+                    <p className='w-full bg-emerald-500/10 rounded-md py-2 px-4 text-sm text-emerald-400 shadow-lg'>
+                      {successMesg}
+                    </p>
+                  )}
                   <Button
                     disabled={isPending}
                     type='submit'
                     className='w-full mt-5'
                   >
-                    SIGN UP
+                    {isPending ? (
+                      <>
+                        Signing...
+                        <LoaderIcon className='animate-spin' />
+                      </>
+                    ) : (
+                      <>
+                        SIGN UP
+                        <ChevronRightIcon />
+                      </>
+                    )}
                   </Button>
                 </form>
               </Form>

@@ -1,11 +1,17 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
-export const BrandLogo = ({ className }: { className?: string }) => {
+export const BrandLogo = ({
+  className,
+  showName = true,
+}: {
+  className?: string;
+  showName?: boolean;
+}) => {
   return (
-    <Link href={"/"} className='flex flex-row items-center gap-x-3'>
+    <Link href={"/"} className='flex flex-row items-center gap-x-3 w-fit'>
       <SVGLogo className={className} />
-      <p className='text-xl font-bold tracking-tight'>NURA</p>
+      {showName && <p className='text-xl font-bold tracking-tight'>NURA</p>}
     </Link>
   );
 };

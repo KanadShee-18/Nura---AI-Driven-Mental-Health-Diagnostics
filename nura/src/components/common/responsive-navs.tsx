@@ -1,15 +1,17 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import { IconLayoutSidebar, IconX } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
-import { Suspense, useState } from "react";
+import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { BrandLogo as Logo } from "./brand-logo";
 import { Container } from "./container";
 import { ToggleTheme } from "./theme-toggler";
-import { authClient } from "@/lib/auth-client";
-import { toast } from "sonner";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const NavLinks = [
   {
@@ -142,6 +144,8 @@ export const MobileNavbar = ({ presence }: { presence: boolean }) => {
 };
 
 export const DesktopNavbar = ({ presence }: { presence: boolean }) => {
+  const pathname = usePathname();
+  const isDashboard = pathname.startsWith("/dashboard");
   const handleSignOut = async () => {
     await authClient.signOut();
     toast.success("You've logged out successfully!");
@@ -149,7 +153,12 @@ export const DesktopNavbar = ({ presence }: { presence: boolean }) => {
   };
 
   return (
-    <Container className='py-2 md:flex hidden items-center justify-between font-inter px-5 md:px-8'>
+    <Container
+      className={cn(
+        "py-2 items-center md:flex hidden justify-between font-inter px-5 md:px-8",
+        isDashboard && "md:hidden"
+      )}
+    >
       <Logo />
       <div className='flex items-center gap-x-3.5 md:gap-x-4 lg:gap-x-6'>
         {NavLinks.map((navItem) => (

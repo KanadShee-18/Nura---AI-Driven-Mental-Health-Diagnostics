@@ -33,6 +33,7 @@ import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { error } from "console";
 
 export const loginSchema = z.object({
   email: z.email({ error: "Please provide a valid email" }),
@@ -65,20 +66,30 @@ export const LoginForm = () => {
     setErrMesg(null);
     setLoading(true);
 
-    const { error } = await authClient.signIn.email({
-      email: values.email,
-      password: values.password,
-    });
+    await authClient.signIn.email(
+      {
+        email: values.email,
+        password: values.password,
+        callbackURL: "/dashboard",
+      },
+      {
+        onSuccess: () => {
+          setLoading(false);
+          router.push("/dashboard");
+        },
+        onError: ({ error }) => {
+          if (error.code === "EMAIL_NOT_VERIFIED") {
+            router.push("/verify-email");
+          }
+          setErrMesg(error.message ?? "Something went wrong while login.");
+          toast.error(
+            error.message ?? "Something went wrong while signing in!"
+          );
 
-    setLoading(false);
-    setErrMesg(null);
-
-    if (error) {
-      setErrMesg(error.message ?? "Something went wrong!");
-    } else {
-      toast.success("Signed In Successfully!");
-      window.location.replace("/dashboard");
-    }
+          form.reset();
+        },
+      }
+    );
   };
 
   return (

@@ -15,6 +15,10 @@ export const requireAuth = async () => {
     redirect("/sign-in");
   }
 
+  if (!session.user.emailVerified) {
+    redirect("/verify-email");
+  }
+
   return session;
 };
 
