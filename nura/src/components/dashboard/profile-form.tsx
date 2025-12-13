@@ -121,6 +121,23 @@ export const ProfileForm = ({
     setLoading(false);
   };
 
+  const handleAllSessionRevoke = async () => {
+    setError(null);
+    setLoading(true);
+
+    const { error } = await authClient.revokeSessions();
+
+    setLoading(false);
+
+    if (error) {
+      setError(error.message ?? "Something went wrong!");
+      toast.error("Error while revoking sessions!");
+    } else {
+      toast.success("All sessions revoked successfully!");
+      window.location.replace("/sign-in");
+    }
+  };
+
   return (
     <div className='my-10'>
       {error && (
@@ -216,6 +233,16 @@ export const ProfileForm = ({
             </div>
           </div>
         )}
+        <div className='col-span-2 md:col-span-2'>
+          <Button
+            disabled={loading}
+            onClick={() => handleAllSessionRevoke()}
+            variant={"outline"}
+            className='w-full'
+          >
+            {loading ? "Revoking ..." : "Log out from all Logged In Devices"}
+          </Button>
+        </div>
       </div>
     </div>
   );
