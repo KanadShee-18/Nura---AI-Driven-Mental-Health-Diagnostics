@@ -99,6 +99,20 @@ export const RegisterForm = () => {
     }
   };
 
+  const handleSocialSignIn = async (provider: "google" | "github") => {
+    setSuccessMesg(null);
+    setErrMesg(null);
+
+    const { error } = await authClient.signIn.social({
+      provider,
+      callbackURL: "/dashboard",
+    });
+
+    if (error) {
+      setErrMesg(error.message ?? "Something went wrong!");
+    }
+  };
+
   return (
     <div className=''>
       <Container className='pt-16 px-5 md:px-10 min-h-screen'>
@@ -252,11 +266,19 @@ export const RegisterForm = () => {
             </p>
             <CardFooter className='flex flex-col'>
               <div className='w-full flex items-center gap-2.5'>
-                <Button variant={"outline"} className='flex-1'>
+                <Button
+                  onClick={() => handleSocialSignIn("google")}
+                  variant={"outline"}
+                  className='flex-1'
+                >
                   <FcGoogle />
                   Google
                 </Button>
-                <Button variant={"outline"} className='flex-1'>
+                <Button
+                  onClick={() => handleSocialSignIn("github")}
+                  variant={"outline"}
+                  className='flex-1'
+                >
                   <FaGithub />
                   GitHub
                 </Button>

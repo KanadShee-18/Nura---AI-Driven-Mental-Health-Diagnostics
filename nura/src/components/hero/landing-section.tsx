@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Container } from "../common/container";
 import { Button } from "../ui/button";
 import { TestimonialImage } from "./testimonial-image";
+import Link from "next/link";
 
 export const LandingHero = () => {
   return (
@@ -18,9 +19,12 @@ export const LandingHero = () => {
           and treatment recommendation in under 2 minutes. No waiting lists,
           just clarity.
         </p>
-        <Button className='scale-110 bg-linear-to-br from-primary via-cyan-600 to-teal-600 hover:rounded-[3px] transition-all duration-300 ease-in-out opacity-90 hover:opacity-100'>
+        <Link
+          href={"/dashboard"}
+          className='scale-110 bg-linear-to-br from-primary via-cyan-600 to-teal-600 hover:rounded-[3px] transition-all duration-300 ease-in-out opacity-90 hover:opacity-100 px-5 py-2 rounded-md'
+        >
           Start Your Assessment
-        </Button>
+        </Link>
         <TestimonialImage />
       </Container>
     </section>

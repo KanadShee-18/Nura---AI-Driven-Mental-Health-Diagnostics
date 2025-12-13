@@ -92,6 +92,22 @@ export const LoginForm = () => {
     );
   };
 
+  const handleSocialSignIn = async (provider: "google" | "github") => {
+    setErrMesg(null);
+    setLoading(true);
+
+    const { error } = await authClient.signIn.social({
+      provider,
+      callbackURL: "/dashboard",
+    });
+
+    setLoading(false);
+
+    if (error) {
+      setErrMesg(error.message ?? "Something went wrong!");
+    }
+  };
+
   return (
     <div className=''>
       <Container className='pt-16 px-5 md:px-10 min-h-screen'>
@@ -164,7 +180,7 @@ export const LoginForm = () => {
                               type={showPassword ? "text" : "password"}
                               placeholder='Enter correct password'
                               {...field}
-                              disabled={isPending}
+                              disabled={isPending || loading}
                               className='pl-10'
                             />
                           </FormControl>
@@ -174,7 +190,7 @@ export const LoginForm = () => {
                     )}
                   />
                   <Button
-                    disabled={isPending}
+                    disabled={isPending || loading}
                     type='submit'
                     className='w-full mt-5'
                   >
@@ -188,11 +204,21 @@ export const LoginForm = () => {
             </p>
             <CardFooter className='flex flex-col'>
               <div className='w-full flex items-center gap-2.5'>
-                <Button variant={"outline"} className='flex-1'>
+                <Button
+                  type='button'
+                  onClick={() => handleSocialSignIn("google")}
+                  variant={"outline"}
+                  className='flex-1'
+                >
                   <FcGoogle />
                   Google
                 </Button>
-                <Button variant={"outline"} className='flex-1'>
+                <Button
+                  type='button'
+                  onClick={() => handleSocialSignIn("github")}
+                  variant={"outline"}
+                  className='flex-1'
+                >
                   <FaGithub />
                   GitHub
                 </Button>
