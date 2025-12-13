@@ -52,12 +52,16 @@ export const healthCheckUp = async (
       yoga: data.yoga,
     };
 
-    const resp = await axios.post("http://localhost:8000/predict", apiPayload, {
-      headers: {
-        "x-api-key": process.env.API_SECRET_KEY!,
-        "Content-Type": "application/json",
-      },
-    });
+    const resp = await axios.post(
+      `${process.env.SERVER_URL}/predict`,
+      apiPayload,
+      {
+        headers: {
+          "x-api-key": process.env.API_SECRET_KEY!,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     const { predicted_condition, treatment_needed } = resp.data;
 
