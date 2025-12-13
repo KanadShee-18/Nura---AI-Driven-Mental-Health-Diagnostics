@@ -71,7 +71,7 @@ export const Footer = () => {
         </div>
 
         <div className='mt-10 pt-6 border-t text-center text-sm text-muted-foreground'>
-          <p>&copy; {new Date().getFullYear()} Nura. All rights reserved.</p>
+          <p>&copy; 2025 Nura. All rights reserved.</p>
         </div>
       </Container>
     </footer>

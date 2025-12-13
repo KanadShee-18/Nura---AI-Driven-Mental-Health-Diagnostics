@@ -41,7 +41,9 @@ const DashboardPage = async () => {
             </h2>
           </div>
           <Link href={"/check-up"}>
-            <Button size={"sm"}>New CheckUp</Button>
+            <Button variant={"outline"} size={"sm"}>
+              New CheckUp
+            </Button>
           </Link>
         </div>
 

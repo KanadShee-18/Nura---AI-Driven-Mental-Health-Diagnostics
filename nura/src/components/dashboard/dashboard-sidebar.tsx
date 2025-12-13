@@ -41,12 +41,12 @@ const sidebarMenus = [
       {
         title: "Check Up",
         icon: StethoscopeIcon,
-        url: "/check-up",
+        url: "/dashboard/check-up",
       },
       {
         title: "Profile",
         icon: UserIcon,
-        url: "/profile",
+        url: "/dashboard/profile",
       },
     ],
   },
@@ -76,7 +76,7 @@ export const AppSidebar = () => {
                   >
                     <SidebarMenuButton
                       tooltip={menuItem.title}
-                      isActive={pathname.startsWith(menuItem.url)}
+                      isActive={pathname === menuItem.url}
                       asChild
                       className='gap-x-4 px-4 group h-9'
                     >

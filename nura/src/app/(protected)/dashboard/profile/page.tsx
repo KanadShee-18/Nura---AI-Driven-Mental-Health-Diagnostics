@@ -1,10 +1,6 @@
 import { Container } from "@/components/common/container";
 import { ProfileForm } from "@/components/dashboard/profile-form";
-import {
-  getFullSession,
-  getServerSession,
-  requireAuth,
-} from "@/lib/get-session";
+import { getFullSession, requireAuth } from "@/lib/get-session";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

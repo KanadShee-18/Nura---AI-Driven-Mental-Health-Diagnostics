@@ -26,7 +26,9 @@ export const AppHeader = async () => {
           </>
         ) : (
           <>
-            <div>{session?.user.name[0]}</div>
+            <div className='size-8 flex items-center justify-center bg-accent rounded-sm shadow'>
+              {session?.user.name[0]}
+            </div>
           </>
         )}
       </div>
