@@ -145,7 +145,8 @@ export const MobileNavbar = ({ presence }: { presence: boolean }) => {
 
 export const DesktopNavbar = ({ presence }: { presence: boolean }) => {
   const pathname = usePathname();
-  const isDashboard = pathname.startsWith("/dashboard");
+  const isDashboard =
+    pathname.startsWith("/dashboard") || pathname.startsWith("/check-up");
   const handleSignOut = async () => {
     await authClient.signOut();
     toast.success("You've logged out successfully!");

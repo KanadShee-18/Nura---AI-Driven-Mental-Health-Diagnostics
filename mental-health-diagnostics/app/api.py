@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, Header
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pandas as pd
 import joblib
@@ -10,6 +11,16 @@ from data_utils import clean_gender, preprocess_input
 load_dotenv()
 
 app = FastAPI(title="Mental Health Diagnostics API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Get the directory of the current file (api.py)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -36,13 +47,14 @@ class PatientData(BaseModel):
     family_history: str
     benefits: str
     care_options: str
-    anonymity: str
+    # anonymity: str
     leave: str
     mental_health_consequence: str
     self_employed: str
-    coworkers: str
-    supervisor: str
+    # coworkers: str
+    # supervisor: str
     mental_health_interview: str
+    yoga: str
 
 @app.get("/")
 def read_root():
@@ -54,7 +66,7 @@ def predict_condition(data: PatientData, x_api_key: str = Header(None)):
     secret_key = os.getenv("API_SECRET_KEY")
     if secret_key and x_api_key != secret_key:
         raise HTTPException(status_code=403, detail="Unauthorized access")
-        
+            
     # making it a dict
     input_data = data.model_dump()
     

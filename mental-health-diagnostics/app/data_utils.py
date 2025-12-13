@@ -18,9 +18,6 @@ def preprocess_data(filepath, encoders_path='../models/encoders.pkl', is_trainin
     # Clean Gender
     df['Gender'] = df['Gender'].apply(clean_gender)
     
-    # Handle missing values (simple imputation)
-    # filling categorical with unknown and numbers with median
-    
     # Fix Age outliers
     df['Age'] = pd.to_numeric(df['Age'], errors='coerce')
     median_age = df['Age'].median()
@@ -34,7 +31,7 @@ def preprocess_data(filepath, encoders_path='../models/encoders.pkl', is_trainin
                         'seek_help', 'anonymity', 'leave', 'mental_health_consequence', 
                         'phys_health_consequence', 'coworkers', 'supervisor', 
                         'mental_health_interview', 'phys_health_interview', 
-                        'mental_vs_physical', 'obs_consequence']
+                        'mental_vs_physical', 'obs_consequence', 'yoga']
     
     # Filter only columns that exist in the dataframe
     existing_cat_cols = [col for col in categorical_cols if col in df.columns]

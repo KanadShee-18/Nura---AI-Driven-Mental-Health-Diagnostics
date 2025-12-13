@@ -3,12 +3,10 @@ import numpy as np
 import os
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
-from sklearn.semi_supervised import SelfTrainingClassifier
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import classification_report, accuracy_score
 import joblib
 from data_utils import preprocess_data
-
 
 def train():
     # Get base dir
@@ -17,7 +15,7 @@ def train():
     MODELS_DIR = os.path.join(BASE_DIR, '..', 'models')
 
     print("Loading and preprocessing data...")
-    df, encoders = preprocess_data(os.path.join(DATA_DIR, 'modified_dataset_with_condition.csv'), encoders_path=os.path.join(MODELS_DIR, 'encoders.pkl'), is_training=True)
+    df, encoders = preprocess_data(os.path.join(DATA_DIR, 'dataset.csv'), encoders_path=os.path.join(MODELS_DIR, 'encoders.pkl'), is_training=True)
     
     # Define targets and features
     target_cols = ['condition', 'treatment']
@@ -39,51 +37,53 @@ def train():
     joblib.dump(le_condition, os.path.join(MODELS_DIR, 'le_condition.pkl'))
     joblib.dump(le_treatment, os.path.join(MODELS_DIR, 'le_treatment.pkl'))
     
-    # training the first model for condition
-    print("\nTraining Condition Model (Semi-Supervised)...")
+    # --- Training Condition Model ---
+    print("\nTraining Condition Model (Supervised with Tuning)...")
     
-    # splitting data
     X_train, X_test, y_train, y_test = train_test_split(X, y_condition_encoded, test_size=0.2, random_state=42)
     
-    # pretending some data is unlabeled to test semi-supervised learning
-    rng = np.random.RandomState(42)
-    random_unlabeled_points = rng.rand(len(y_train)) < 0.5
-    y_train_mixed = np.copy(y_train)
-    y_train_mixed[random_unlabeled_points] = -1
+    # Using RandomForest with class_weight='balanced' to handle imbalance
+    rf = RandomForestClassifier(random_state=42, class_weight='balanced')
     
-    print(f"Labeled samples: {np.sum(y_train_mixed != -1)}")
-    print(f"Unlabeled samples: {np.sum(y_train_mixed == -1)}")
+    # Hyperparameter tuning
+    param_grid = {
+        'n_estimators': [100, 200, 300],
+        'max_depth': [None, 10, 20, 30],
+        'min_samples_split': [2, 5, 10],
+        'min_samples_leaf': [1, 2, 4]
+    }
     
-    # using random forest
-    rf = RandomForestClassifier(n_estimators=200, random_state=42)
+    grid_search = GridSearchCV(estimator=rf, param_grid=param_grid, cv=3, n_jobs=-1, verbose=1)
+    grid_search.fit(X_train, y_train)
     
-    # self training stuff
-    # had to change base_estimator to estimator because sklearn updated
-    st_clf = SelfTrainingClassifier(estimator=rf, criterion='k_best', k_best=10, max_iter=10)
-    st_clf.fit(X_train, y_train_mixed)
+    best_rf = grid_search.best_estimator_
+    print(f"Best parameters for Condition Model: {grid_search.best_params_}")
     
-    # checking how good it is
-    y_pred = st_clf.predict(X_test)
+    y_pred = best_rf.predict(X_test)
     print("Condition Model Accuracy:", accuracy_score(y_test, y_pred))
     print(classification_report(y_test, y_pred, target_names=le_condition.classes_, zero_division=0))
     
-    # saving it for later
-    joblib.dump(st_clf, os.path.join(MODELS_DIR, 'condition_model.pkl'))
+    joblib.dump(best_rf, os.path.join(MODELS_DIR, 'condition_model.pkl'))
     
-    # training the treatment model now
-    print("\nTraining Treatment Model...")
-    # just doing normal supervised learning here
-    # keeping it simple for treatment prediction
+    # --- Training Treatment Model ---
+    print("\nTraining Treatment Model (Supervised with Tuning)...")
+    
     X_train_t, X_test_t, y_train_t, y_test_t = train_test_split(X, y_treatment_encoded, test_size=0.2, random_state=42)
     
-    rf_treatment = RandomForestClassifier(n_estimators=100, random_state=42)
-    rf_treatment.fit(X_train_t, y_train_t)
+    rf_treatment = RandomForestClassifier(random_state=42, class_weight='balanced')
     
-    y_pred_t = rf_treatment.predict(X_test_t)
+    # Reusing the same grid for simplicity, or could define a smaller one
+    grid_search_t = GridSearchCV(estimator=rf_treatment, param_grid=param_grid, cv=3, n_jobs=-1, verbose=1)
+    grid_search_t.fit(X_train_t, y_train_t)
+    
+    best_rf_t = grid_search_t.best_estimator_
+    print(f"Best parameters for Treatment Model: {grid_search_t.best_params_}")
+    
+    y_pred_t = best_rf_t.predict(X_test_t)
     print("Treatment Model Accuracy:", accuracy_score(y_test_t, y_pred_t))
     print(classification_report(y_test_t, y_pred_t, target_names=le_treatment.classes_, zero_division=0))
     
-    joblib.dump(rf_treatment, os.path.join(MODELS_DIR, 'treatment_model.pkl'))
+    joblib.dump(best_rf_t, os.path.join(MODELS_DIR, 'treatment_model.pkl'))
     
     print("\nModels and encoders saved successfully.")
 

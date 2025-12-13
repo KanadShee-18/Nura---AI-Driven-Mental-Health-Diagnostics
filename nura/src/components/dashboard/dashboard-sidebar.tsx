@@ -40,7 +40,7 @@ const sidebarMenus = [
       {
         title: "Check Up",
         icon: StethoscopeIcon,
-        url: "/dashboard/check-up",
+        url: "/check-up",
       },
     ],
   },

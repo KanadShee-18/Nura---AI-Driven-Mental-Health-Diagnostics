@@ -21,7 +21,8 @@ def get_user_input(feature_cols, encoders):
         'self_employed': "Are you self-employed? (Yes/No)",
         'coworkers': "Would you be willing to discuss a mental health issue with your coworkers? (Yes/No/Some of them)",
         'supervisor': "Would you be willing to discuss a mental health issue with your direct supervisor? (Yes/No/Some of them)",
-        'mental_health_interview': "Would you bring up a mental health issue with a potential employer in an interview? (Yes/No/Maybe)"
+        'mental_health_interview': "Would you bring up a mental health issue with a potential employer in an interview? (Yes/No/Maybe)",
+        'yoga': "Do you practice yoga? (Yes/No)"
     }
 
     for col in feature_cols:
