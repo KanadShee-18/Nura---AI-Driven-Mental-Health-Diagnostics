@@ -7,7 +7,6 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
-
   emailAndPassword: {
     enabled: true,
     autoSignIn: true,
@@ -23,6 +22,19 @@ export const auth = betterAuth({
         body: "Click this link to verify your email: ",
         url,
       });
+    },
+  },
+  user: {
+    changeEmail: {
+      enabled: true,
+      async sendChangeEmailConfirmation({ user, newEmail, url }) {
+        await sendEmail({
+          email: user.email,
+          title: "Approve email change",
+          body: `Your old email ${user.email} is going to change into: ${newEmail}. Click on this button below to confirm.`,
+          url,
+        });
+      },
     },
   },
   socialProviders: {

@@ -29,7 +29,7 @@ const DashboardHistory = ({ data }: { data: CheckUp[] }) => {
               setSelected(checkUp);
               setOpen(true);
             }}
-            className='p-6 relative cursor-pointer dark:border-zinc-800 border-zinc-300 rounded-sm dark:shadow-2xl shadow-sm shadow-black/10 dark:shadow-white/5 bg-linear-to-br from-zinc-200/10 dark:from-zinc-900/10 via-transparent to-neutral-400/20 dark:to-neutral-900/20 backdrop-blur-sm text-card-foreground transition-all duration-300 ease-in-out flex flex-col'
+            className='p-6 min-w-[300px] relative cursor-pointer dark:border-zinc-800 border-zinc-300 rounded-sm dark:shadow-2xl shadow-sm shadow-black/10 dark:shadow-white/5 bg-linear-to-br hover:bg-linear-to-bl from-zinc-200/10 dark:from-zinc-900/10 hover:dark:from-zinc-900/30 via-transparent to-neutral-400/20 dark:to-neutral-900/20 hover:dark:to-neutral-900/40 backdrop-blur-sm text-card-foreground transition-all duration-300 ease-in-out flex flex-col opacity-80 hover:opacity-100'
           >
             <p className='text-[11px] absolute top-0 right-0 px-2 py-0.5 tracking-wider  bg-linear-to-r dark:from-teal-500 from-teal-600 dark:to-slate-700 to-slate-500  text-white text-shadow-2xs rounded-bl-sm rounded-tr-sm w-fit border-b ml-auto'>
               ID: {checkUp.id}

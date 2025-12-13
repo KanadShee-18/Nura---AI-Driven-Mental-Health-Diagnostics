@@ -8,6 +8,24 @@ export async function getServerSession() {
   });
 }
 
+export async function getFullSession() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  if (!session) {
+    return null;
+  }
+
+  const accounts = await auth.api.listUserAccounts({
+    headers: await headers(),
+  });
+
+  return {
+    ...session,
+    accounts,
+  };
+}
+
 export const requireAuth = async () => {
   const session = await getServerSession();
 

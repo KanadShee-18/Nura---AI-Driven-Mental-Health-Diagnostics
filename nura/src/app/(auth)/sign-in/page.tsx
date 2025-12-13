@@ -3,6 +3,7 @@ import { requireUnAuth } from "@/lib/get-session";
 
 export default async function LoginPage() {
   await requireUnAuth();
+
   return (
     <div className='relative'>
       <div className='fixed -z-10 inset-0 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#22252b_1px,transparent_1px)] bg-size-[16px_16px]' />

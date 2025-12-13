@@ -189,8 +189,13 @@ export const LoginForm = () => {
                       </FormItem>
                     )}
                   />
+                  {errMesg && (
+                    <p className='w-full bg-destructive/10 rounded-md py-2 px-4 text-sm text-rose-300 shadow-lg'>
+                      {errMesg}
+                    </p>
+                  )}
                   <Button
-                    disabled={isPending || loading}
+                    disabled={loading}
                     type='submit'
                     className='w-full mt-5'
                   >

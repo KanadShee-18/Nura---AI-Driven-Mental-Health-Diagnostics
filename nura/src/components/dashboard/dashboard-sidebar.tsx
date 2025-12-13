@@ -8,6 +8,7 @@ import {
   LogOutIcon,
   StarIcon,
   StethoscopeIcon,
+  UserIcon,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -41,6 +42,11 @@ const sidebarMenus = [
         title: "Check Up",
         icon: StethoscopeIcon,
         url: "/check-up",
+      },
+      {
+        title: "Profile",
+        icon: UserIcon,
+        url: "/profile",
       },
     ],
   },
