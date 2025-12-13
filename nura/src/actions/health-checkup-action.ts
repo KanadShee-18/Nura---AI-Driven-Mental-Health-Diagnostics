@@ -3,6 +3,7 @@
 import prisma from "@/lib/db";
 import { mentalHealthSchema, type MentalHealthFormData } from "@/lib/schemas";
 import axios from "axios";
+import { revalidatePath } from "next/cache";
 
 export const healthCheckUp = async (
   values: MentalHealthFormData,
@@ -92,6 +93,8 @@ export const healthCheckUp = async (
         treatment: treatment_needed,
       },
     });
+
+    revalidatePath("/dashboard");
 
     return {
       success: true,

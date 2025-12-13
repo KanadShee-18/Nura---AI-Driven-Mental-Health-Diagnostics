@@ -81,6 +81,7 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
         timeoutRef.current = setTimeout(() => {
           setResult(null);
           router.push("/dashboard");
+          router.refresh();
         }, 5000);
       }
     }
