@@ -60,7 +60,7 @@ const DashboardPage = async () => {
           {checkUpsData.count === 0 && (
             <div className='w-full h-60 gap-y-3.5 flex flex-col items-center justify-center text-muted-foreground'>
               No previous check ups available!
-              <Link href={"/check-up"}>
+              <Link href={"/dashboard/check-up"}>
                 <Button variant={"outline"}>Opt For New CheckUp</Button>
               </Link>
             </div>
