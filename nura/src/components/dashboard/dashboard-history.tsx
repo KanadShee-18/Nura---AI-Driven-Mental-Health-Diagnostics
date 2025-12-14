@@ -61,7 +61,7 @@ const DashboardHistory = ({ data }: { data: CheckUp[] }) => {
                   Condition
                 </p>
                 <p className='text-sm font-medium text-orange-700 dark:text-orange-200/70'>
-                  {checkUp.createdAt.toLocaleString()}
+                  {checkUp.condition}
                 </p>
               </div>
             </div>
@@ -75,7 +75,7 @@ const DashboardHistory = ({ data }: { data: CheckUp[] }) => {
                   Treatment Needed
                 </p>
                 <p className='text-sm font-medium text-emerald-500 dark:text-emerald-300/80'>
-                  {checkUp.createdAt.toLocaleString()}
+                  {checkUp.treatment}
                 </p>
               </div>
             </div>
