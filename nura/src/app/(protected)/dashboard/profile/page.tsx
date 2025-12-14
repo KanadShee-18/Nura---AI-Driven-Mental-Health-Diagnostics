@@ -1,12 +1,26 @@
 import { Container } from "@/components/common/container";
 import { ProfileForm } from "@/components/dashboard/profile-form";
 import { getFullSession, requireAuth } from "@/lib/get-session";
+import { LoaderIcon } from "lucide-react";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Profile | Nura",
   description: "Manage profile settings.",
 };
+
+async function ProfileWrapper({
+  email,
+  name,
+  oauthEnabled,
+}: {
+  email: string;
+  name: string;
+  oauthEnabled: boolean;
+}) {
+  return <ProfileForm email={email} name={name} oauthEnabled={oauthEnabled} />;
+}
 
 const ProfilePage = async () => {
   await requireAuth();
@@ -36,13 +50,22 @@ const ProfilePage = async () => {
         <p className='text-sm font-medium text-muted-foreground'>
           Manage your name, email, password seamlessly with Nura
         </p>
-        <div>
-          <ProfileForm
+        <Suspense
+          fallback={
+            <div className='flex items-center justify-center h-screen w-full'>
+              <div className='flex flex-row items-center gap-x-2 animate-pulse'>
+                <LoaderIcon className='animate-spin' />
+                Loading Profile ...
+              </div>
+            </div>
+          }
+        >
+          <ProfileWrapper
             email={session.user.email}
             name={session.user.name}
             oauthEnabled={hasOAuthEnabled}
           />
-        </div>
+        </Suspense>
       </Container>
     </div>
   );

@@ -1,3 +1,4 @@
+import { LoaderIcon } from "lucide-react";
 import { Suspense } from "react";
 
 export default function AuthLayout({
@@ -6,7 +7,16 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Suspense fallback={null}>
+    <Suspense
+      fallback={
+        <div className='flex items-center justify-center h-screen w-full'>
+          <div className='flex flex-row items-center gap-x-2'>
+            <LoaderIcon className='animate-spin' />
+            Loading Auth ...
+          </div>
+        </div>
+      }
+    >
       <div className='relative'>
         <div className='fixed -z-10 inset-0 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#22252b_1px,transparent_1px)] bg-size-[16px_16px]' />
 

@@ -1,6 +1,12 @@
 import { CheckUpForm } from "@/components/dashboard/checkup-form";
 import { getServerSession, requireAuth } from "@/lib/get-session";
+import { LoaderIcon } from "lucide-react";
 import { Metadata } from "next";
+import { Suspense } from "react";
+
+async function CheckUpWrapper({ userId }: { userId: string }) {
+  return <CheckUpForm userId={userId} />;
+}
 
 export const metadata: Metadata = {
   title: "CheckUp | Nura",
@@ -23,7 +29,19 @@ const CheckUpPage = async () => {
 
       <div className='fixed inset-0 -z-5 h-full w-full bg-linear-to-br from-teal-400/40 via-transparent to-cyan-400/45 mask-b-from-0% mask-t-from-20% rotate-45 scale-200'></div>
 
-      <CheckUpForm userId={session.user.id} />
+      {/* <CheckUpForm userId={session.user.id} /> */}
+      <Suspense
+        fallback={
+          <div className='flex items-center justify-center h-screen w-full'>
+            <div className='flex flex-row items-center gap-x-2 animate-pulse'>
+              <LoaderIcon className='animate-spin' />
+              Loading Form ...
+            </div>
+          </div>
+        }
+      >
+        <CheckUpWrapper userId={session.user.id} />
+      </Suspense>
     </div>
   );
 };
