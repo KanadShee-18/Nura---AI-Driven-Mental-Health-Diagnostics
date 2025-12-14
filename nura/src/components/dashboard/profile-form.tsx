@@ -30,6 +30,8 @@ export const ProfileForm = ({
   const [currentPassword, setCurrentPassword] = useState<string | null>(null);
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [pwdLoading, setPwdLoading] = useState<boolean>(false);
+  const [revokeLoading, setRevokeLoading] = useState<boolean>(false);
 
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
@@ -101,7 +103,7 @@ export const ProfileForm = ({
 
     setError(null);
     setStatus(null);
-    setLoading(true);
+    setPwdLoading(true);
 
     const { error } = await authClient.changePassword({
       currentPassword,
@@ -121,16 +123,16 @@ export const ProfileForm = ({
 
     setNewPassword("");
     setCurrentPassword("");
-    setLoading(false);
+    setPwdLoading(false);
   };
 
   const handleAllSessionRevoke = async () => {
     setError(null);
-    setLoading(true);
+    setRevokeLoading(true);
 
     const { error } = await authClient.revokeSessions();
 
-    setLoading(false);
+    setRevokeLoading(false);
 
     if (error) {
       setError(error.message ?? "Something went wrong!");
@@ -159,14 +161,14 @@ export const ProfileForm = ({
         <div className='col-span-2 md:col-span-1'>
           <Card className='p-6'>
             <h2 className='text-2xl font-semibold'>Profile Details</h2>
-            {imageUrl?.length && (
+            {imageUrl && oauthEnabled && (
               <Image
                 src={imageUrl}
-                alt={name[0]}
+                alt={name}
                 width={50}
                 height={50}
                 unoptimized
-                className='rounded-sm shadow-2xl'
+                className='rounded-sm shadow-2xl bg-accent border'
               />
             )}
             <div>
@@ -178,7 +180,7 @@ export const ProfileForm = ({
             </div>
             {!oauthEnabled && (
               <Button
-                disabled={loading}
+                disabled={revokeLoading || loading || pwdLoading}
                 onClick={() => handleNameSubmit()}
                 type='button'
                 size={"sm"}
@@ -234,13 +236,13 @@ export const ProfileForm = ({
                   />
                 </div>
                 <Button
+                  disabled={revokeLoading || loading || pwdLoading}
                   onClick={() => handlePasswordUpdate()}
-                  disabled={loading}
                   type='button'
                   size={"sm"}
                 >
-                  {loading ? "Changing" : "Change"} Password
-                  {loading && <LoaderIcon className='animate-spin' />}
+                  {pwdLoading ? "Changing" : "Change"} Password
+                  {pwdLoading && <LoaderIcon className='animate-spin' />}
                 </Button>
               </Card>
             </div>
@@ -248,12 +250,14 @@ export const ProfileForm = ({
         )}
         <div className='col-span-2 md:col-span-2'>
           <Button
-            disabled={loading}
+            disabled={revokeLoading || loading || pwdLoading}
             onClick={() => handleAllSessionRevoke()}
             variant={"outline"}
             className='w-full'
           >
-            {loading ? "Revoking ..." : "Log out from all Logged In Devices"}
+            {revokeLoading
+              ? "Revoking ..."
+              : "Log out from all Logged In Devices"}
           </Button>
         </div>
       </div>
