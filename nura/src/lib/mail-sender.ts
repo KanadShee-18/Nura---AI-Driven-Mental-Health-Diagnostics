@@ -48,8 +48,8 @@ export const sendEmail = async ({
     return {
       success: "Confirmation mail has been sent to email!",
     };
-  } catch (error) {
-    console.log("Mail Sending error: ", error);
+  } catch {
+    // console.log("Mail Sending error: ", error);
 
     return {
       error: "Some error occurred while sending email.",

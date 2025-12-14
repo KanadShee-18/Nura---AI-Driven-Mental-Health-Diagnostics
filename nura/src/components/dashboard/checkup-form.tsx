@@ -61,9 +61,6 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
   const timeoutRef = useRef<NodeJS.Timeout>(null);
 
   const onSubmit = async (values: MentalHealthFormData) => {
-    console.log("Button pressed");
-    console.log(values);
-
     setResult(null);
     setErrMesg(null);
     setLoading(true);
@@ -98,7 +95,7 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
   }, []);
 
   return (
-    <Card className='p-6 max-w-md lg:max-w-lg mx-auto shadow-2xl'>
+    <Card className='p-6 md:my-10 my-5 max-w-md lg:max-w-lg mx-auto shadow-2xl'>
       <h2 className='text-2xl font-semibold text-transparent bg-clip-text bg-linear-to-r dark:from-blue-50 from-blue-500 dark:via-blue-100 via-teal-600 dark:to-slate-200 to-slate-600'>
         Mental Well-Being Assessment
       </h2>

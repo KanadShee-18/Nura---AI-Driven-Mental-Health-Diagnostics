@@ -9,15 +9,18 @@ import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { LoaderIcon } from "lucide-react";
+import Image from "next/image";
 
 export const ProfileForm = ({
   email,
   name,
   oauthEnabled = false,
+  imageUrl,
 }: {
   email: string;
   name: string;
   oauthEnabled: boolean;
+  imageUrl?: string;
 }) => {
   const router = useRouter();
 
@@ -59,36 +62,36 @@ export const ProfileForm = ({
     setLoading(false);
   };
 
-  const handleEmailUpdate = async () => {
-    if (newEmail?.trim() === email) {
-      toast.info("No new change found in email!");
-      return;
-    }
+  // const handleEmailUpdate = async () => {
+  //   if (newEmail?.trim() === email) {
+  //     toast.info("No new change found in email!");
+  //     return;
+  //   }
 
-    if (!newEmail) {
-      toast.error("New Email is required!");
-      return;
-    }
+  //   if (!newEmail) {
+  //     toast.error("New Email is required!");
+  //     return;
+  //   }
 
-    setError(null);
-    setStatus(null);
-    setLoading(true);
+  //   setError(null);
+  //   setStatus(null);
+  //   setLoading(true);
 
-    const { error } = await authClient.changeEmail({
-      newEmail,
-      callbackURL: "/email-verified",
-    });
+  //   const { error } = await authClient.changeEmail({
+  //     newEmail,
+  //     callbackURL: "/email-verified",
+  //   });
 
-    if (error) {
-      setError(error.message ?? "Some error occurred while updating the email");
-    } else {
-      setStatus("Verification Email sent successfully!");
-      toast.success("Verification Email sent successfully!");
-      router.refresh();
-    }
+  //   if (error) {
+  //     setError(error.message ?? "Some error occurred while updating the email");
+  //   } else {
+  //     setStatus("Verification Email sent successfully!");
+  //     toast.success("Verification Email sent successfully!");
+  //     router.refresh();
+  //   }
 
-    setLoading(false);
-  };
+  //   setLoading(false);
+  // };
 
   const handlePasswordUpdate = async () => {
     if (!newPassword || !currentPassword) {
@@ -139,7 +142,7 @@ export const ProfileForm = ({
   };
 
   return (
-    <div className='my-10'>
+    <div className='my-10 pb-20'>
       {error && (
         <p className='dark:text-rose-300 text-center text-rose-500 text-sm'>
           {error}
@@ -156,6 +159,16 @@ export const ProfileForm = ({
         <div className='col-span-2 md:col-span-1'>
           <Card className='p-6'>
             <h2 className='text-2xl font-semibold'>Profile Details</h2>
+            {imageUrl?.length && (
+              <Image
+                src={imageUrl}
+                alt={name[0]}
+                width={50}
+                height={50}
+                unoptimized
+                className='rounded-sm shadow-2xl'
+              />
+            )}
             <div>
               <p className='text-sm my-1'>Your Name</p>
               <Input

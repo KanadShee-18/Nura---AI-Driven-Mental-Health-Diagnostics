@@ -22,6 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import { Input } from "@/components/ui/input";
 import {
+  ChevronRightIcon,
   EyeIcon,
   EyeOffIcon,
   LockKeyholeOpenIcon,
@@ -112,7 +113,7 @@ export const LoginForm = () => {
     <div className=''>
       <Container className='pt-16 px-5 md:px-10 min-h-screen'>
         <div className='flex mt-24 items-center justify-center'>
-          <Card className='w-[400px] py-8'>
+          <Card className='w-100 py-8'>
             <CardHeader>
               <h3 className='text-3xl font-semibold'>Welcome Back</h3>
               <p className='text-sm text-muted-foreground font-medium'>
@@ -199,7 +200,8 @@ export const LoginForm = () => {
                     type='submit'
                     className='w-full mt-5'
                   >
-                    LOG IN
+                    {loading || isPending ? "Logging " : "LOG "} IN
+                    <ChevronRightIcon />
                   </Button>
                 </form>
               </Form>

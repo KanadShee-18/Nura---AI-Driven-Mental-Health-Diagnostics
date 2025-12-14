@@ -43,7 +43,7 @@ export const checkUps = async ({
       checkUps: preCheckUps,
     };
   } catch (error) {
-    console.log("Error in fetching previous check ups: ", error);
+    // console.log("Error in fetching previous check ups: ", error);
     return {
       success: false,
       message: "Some error occurred while fetching user check ups!",

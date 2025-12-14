@@ -114,7 +114,7 @@ export const RegisterForm = () => {
   };
 
   return (
-    <div className=''>
+    <div className='mb-20'>
       <Container className='pt-16 px-5 md:px-10 min-h-screen'>
         <div className='flex mt-24 items-center justify-center'>
           <Card className='w-md py-8'>

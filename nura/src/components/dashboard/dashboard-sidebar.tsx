@@ -52,7 +52,17 @@ const sidebarMenus = [
   },
 ];
 
-export const AppSidebar = () => {
+export const AppSidebar = ({
+  userEmail,
+  userName,
+  oauthEnabled,
+  imageUrl,
+}: {
+  userName: string;
+  userEmail: string;
+  oauthEnabled: boolean;
+  imageUrl?: string;
+}) => {
   const router = useRouter();
   const pathname = usePathname();
   return (
@@ -97,7 +107,7 @@ export const AppSidebar = () => {
         ))}
       </SidebarContent>
       <SidebarFooter>
-        <SidebarMenu className='font-medium mb-7'>
+        <SidebarMenu className='font-medium mb-2'>
           <SidebarMenuItem>
             <SidebarMenuButton
               tooltip={"Logout"}
@@ -117,6 +127,40 @@ export const AppSidebar = () => {
               <LogOutIcon className='size-4' />
               <span className='py-5 hover:-translate-x-1 duration-200 transition-all ease-linear'>
                 Sign Out
+              </span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+        <SidebarMenu className='bg-accent rounded-sm font-medium'>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              tooltip={"Profile"}
+              className='gap-x-4 px-4 h-auto py-2'
+              onClick={() => router.push("/dashboard/profile")}
+            >
+              <span className='w-full aspect-square min-w-4 max-w-8 rounded shadow flex items-center justify-center bg-primary text-white text-sm font-semibold'>
+                {imageUrl?.length ? (
+                  <>
+                    <Image
+                      src={imageUrl}
+                      alt={userName[0]}
+                      width={20}
+                      height={20}
+                      className='min-w-4 w-full max-w-8 rounded aspect-square'
+                      unoptimized
+                    />
+                  </>
+                ) : (
+                  <p>{userName[0]}</p>
+                )}
+              </span>
+              <span className='flex flex-col overflow-hidden'>
+                <p className='text-sm font-semibold truncate duration-200 transition-transform ease-linear'>
+                  {userName}
+                </p>
+                <p className='text-muted-foreground text-xs truncate duration-200 transition-transform ease-linear'>
+                  {userEmail}
+                </p>
               </span>
             </SidebarMenuButton>
           </SidebarMenuItem>

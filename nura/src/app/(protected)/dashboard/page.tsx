@@ -27,20 +27,20 @@ const DashboardPage = async () => {
   });
 
   return (
-    <div className='flex p-5 w-full flex-1 h-screen relative flex-col'>
-      <div className='fixed -z-10 inset-0 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#22252b_1px,transparent_1px)] bg-size-[16px_16px]' />
+    <div className='flex p-5 w-full flex-1 min-h-screen relative flex-col pb-20'>
+      <div className='fixed md:flex hidden -z-10 inset-0 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#22252b_1px,transparent_1px)] bg-size-[16px_16px]' />
 
-      <div className='fixed inset-0 -z-5 h-full w-full bg-linear-to-br from-teal-400/20 via-transparent to-cyan-400/25 mask-b-from-0% mask-t-from-20% rotate-45 scale-200'></div>
+      <div className='fixed md:flex hidden inset-0 -z-5 h-full w-full bg-linear-to-br from-teal-400/20 via-transparent to-cyan-400/25 mask-b-from-0% mask-t-from-20% rotate-45 md:scale-200 scale-400'></div>
 
       <Container>
-        <div className='flex h-fit flex-row gap-4 justify-between w-full'>
+        <div className='flex h-fit flex-col md:flex-row gap-4 justify-between w-full'>
           <div className='flex flex-row gap-x-2.5 items-center h-fit'>
             <StethoscopeIcon className='size-6 text-cyan-500' />
             <h2 className='text-2xl font-semibold text-cyan-500 text-shadow-2xs'>
               Previous Check Ups
             </h2>
           </div>
-          <Link href={"/check-up"}>
+          <Link href={"/dashboard/check-up"}>
             <Button variant={"outline"} size={"sm"}>
               New CheckUp
             </Button>

@@ -1,3 +1,5 @@
+import { BrandLogo } from "@/components/common/brand-logo";
+import { Container } from "@/components/common/container";
 import { CheckUpForm } from "@/components/dashboard/checkup-form";
 import { getServerSession, requireAuth } from "@/lib/get-session";
 import { LoaderIcon } from "lucide-react";
@@ -25,23 +27,32 @@ const CheckUpPage = async () => {
 
   return (
     <div className='p-5 relative'>
-      <div className='fixed -z-10 inset-0 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#22252b_1px,transparent_1px)] bg-size-[16px_16px]' />
+      <div className='fixed md:flex hidden -z-10 inset-0 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#22252b_1px,transparent_1px)] bg-size-[16px_16px]' />
 
-      <div className='fixed inset-0 -z-5 h-full w-full bg-linear-to-br from-teal-400/40 via-transparent to-cyan-400/45 mask-b-from-0% mask-t-from-20% rotate-45 scale-200'></div>
+      <div className='fixed md:flex hidden inset-0 -z-5 h-full w-full bg-linear-to-br from-teal-400/40 via-transparent to-cyan-400/45 mask-b-from-0% mask-t-from-20% rotate-45 scale-200'></div>
 
-      {/* <CheckUpForm userId={session.user.id} /> */}
-      <Suspense
-        fallback={
-          <div className='flex items-center justify-center h-screen w-full'>
-            <div className='flex flex-row items-center gap-x-2 animate-pulse'>
-              <LoaderIcon className='animate-spin' />
-              Loading Form ...
+      <Container className=' pt-5'>
+        <h2 className='text-2xl font-semibold text-primary text-shadow-2xs'>
+          Check Up
+        </h2>
+        <p className='text-sm font-medium text-muted-foreground'>
+          Fill out some basic details to get a mental health report
+        </p>
+
+        <Suspense
+          fallback={
+            <div className='flex flex-col gap-y-5 items-center justify-center h-screen w-full'>
+              <BrandLogo showName={false} className='animate-pulse scale-200' />
+              <div className='flex flex-row items-center gap-x-2 animate-pulse'>
+                <LoaderIcon className='animate-spin' />
+                Loading Form ...
+              </div>
             </div>
-          </div>
-        }
-      >
-        <CheckUpWrapper userId={session.user.id} />
-      </Suspense>
+          }
+        >
+          <CheckUpWrapper userId={session.user.id} />
+        </Suspense>
+      </Container>
     </div>
   );
 };

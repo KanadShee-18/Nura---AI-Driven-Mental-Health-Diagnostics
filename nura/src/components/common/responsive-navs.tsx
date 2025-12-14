@@ -10,8 +10,9 @@ import { Button } from "../ui/button";
 import { BrandLogo as Logo } from "./brand-logo";
 import { Container } from "./container";
 import { ToggleTheme } from "./theme-toggler";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { ChevronRightIcon, LogOutIcon } from "lucide-react";
 
 const NavLinks = [
   {
@@ -41,6 +42,13 @@ const AuthNavLinks = [
 
 export const MobileNavbar = ({ presence }: { presence: boolean }) => {
   const [openSidebar, setOpenSidebar] = useState<boolean>(false);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const isDashboard =
+    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/check-up") ||
+    pathname.startsWith("/profile");
 
   const handleSignOut = async () => {
     await authClient.signOut();
@@ -49,7 +57,12 @@ export const MobileNavbar = ({ presence }: { presence: boolean }) => {
   };
 
   return (
-    <div className='md:hidden flex items-center justify-between px-4 py-2 font-display relative'>
+    <div
+      className={cn(
+        "md:hidden flex items-center justify-between px-4 py-2 font-display relative",
+        isDashboard && "hidden"
+      )}
+    >
       <Logo className='w-5' />
       <button
         className='cursor-pointer'
@@ -110,9 +123,25 @@ export const MobileNavbar = ({ presence }: { presence: boolean }) => {
                 <div className='flex items-center gap-x-3 w-fit ml-auto mr-4'>
                   {presence ? (
                     <>
-                      <Button onClick={handleSignOut} type='button' size={"sm"}>
-                        Logout
-                      </Button>
+                      {isDashboard ? (
+                        <Button
+                          onClick={handleSignOut}
+                          type='button'
+                          size={"sm"}
+                        >
+                          <LogOutIcon />
+                          Logout
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={() => router.push("/dashboard")}
+                          type='button'
+                          size={"sm"}
+                        >
+                          Dashboard
+                          <ChevronRightIcon />
+                        </Button>
+                      )}
                     </>
                   ) : (
                     <>
@@ -144,6 +173,7 @@ export const MobileNavbar = ({ presence }: { presence: boolean }) => {
 };
 
 export const DesktopNavbar = ({ presence }: { presence: boolean }) => {
+  const router = useRouter();
   const pathname = usePathname();
   const isDashboard =
     pathname.startsWith("/dashboard") ||
@@ -178,9 +208,21 @@ export const DesktopNavbar = ({ presence }: { presence: boolean }) => {
         <ToggleTheme />
         {presence ? (
           <>
-            <Button onClick={handleSignOut} type='button' size={"sm"}>
-              Logout
-            </Button>
+            {isDashboard ? (
+              <Button onClick={handleSignOut} type='button' size={"sm"}>
+                <LogOutIcon />
+                Logout
+              </Button>
+            ) : (
+              <Button
+                onClick={() => router.push("/dashboard")}
+                type='button'
+                size={"sm"}
+              >
+                Dashboard
+                <ChevronRightIcon />
+              </Button>
+            )}
           </>
         ) : (
           <>

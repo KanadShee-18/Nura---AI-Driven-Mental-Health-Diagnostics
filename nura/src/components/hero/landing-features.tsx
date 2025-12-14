@@ -9,6 +9,7 @@ import {
   Building2,
 } from "lucide-react";
 import { Container } from "../common/container";
+import { motion } from "motion/react";
 
 const features = [
   {
@@ -57,16 +58,32 @@ const features = [
 
 export const LandingFeatures = () => {
   return (
-    <section id='features' className='py-12 md:py-20'>
+    <motion.section id='features' className='py-12 md:py-20'>
       <div className='bg-linear-to-b from-white/40  dark:from-black/20 to-transparent backdrop-blur-xs pt-10 pb-24'>
         <Container className='container mx-auto px-4'>
-          <h2 className='text-2xl sm:text-3xl md:text-4xl text-center font-semibold tracking-tight text-transparent bg-linear-to-br dark:from-blue-50 from-blue-500 via-cyan-500 to-teal-500 dark:to-slate-300 bg-clip-text py-5 text-shadow-xs'>
+          <motion.h2
+            initial={{ opacity: 0, scale: 0.97, filter: "blur(7px)" }}
+            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            transition={{
+              duration: 0.4,
+              ease: "easeInOut",
+            }}
+            viewport={{ once: true }}
+            className='text-2xl sm:text-3xl md:text-4xl text-center font-semibold tracking-tight text-transparent bg-linear-to-br dark:from-blue-50 from-blue-500 via-cyan-500 to-teal-500 dark:to-slate-300 bg-clip-text py-5 text-shadow-xs'
+          >
             Why Trust Our Diagnostics?
-          </h2>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-14 mt-10'>
-            {features.map((feature) => (
-              <div
+          </motion.h2>
+          <motion.div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-14 mt-10'>
+            {features.map((feature, index) => (
+              <motion.div
                 key={feature.id}
+                initial={{ opacity: 0, y: 5 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.1 * index,
+                  // ease: "easeOut",
+                }}
                 className='p-6 border relative dark:border-zinc-800 border-zinc-300 rounded-none shadow-inner shadow-black/10 dark:shadow-white/5 bg-linear-to-br from-zinc-200/10 dark:from-zinc-900/10 via-transparent to-neutral-400/20 dark:to-neutral-900/20 backdrop-blur-sm text-card-foreground max-w-sm mx-auto md:max-w-md transition-all duration-300 ease-in-out opacity-70 hover:opacity-100'
               >
                 <span className='size-3 absolute border-b-[0.5px] border-r-[0.5px] border-slate-500/40 dark:border-slate-400/40 -left-3 -top-3'></span>
@@ -82,11 +99,11 @@ export const LandingFeatures = () => {
                 <p className='dark:text-zinc-300 text-zinc-500 font-medium text-sm ml-10'>
                   {feature.description}
                 </p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </Container>
       </div>
-    </section>
+    </motion.section>
   );
 };

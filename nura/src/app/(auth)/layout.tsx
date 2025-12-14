@@ -1,3 +1,4 @@
+import { BrandLogo } from "@/components/common/brand-logo";
 import { LoaderIcon } from "lucide-react";
 import { Suspense } from "react";
 
@@ -9,7 +10,8 @@ export default function AuthLayout({
   return (
     <Suspense
       fallback={
-        <div className='flex items-center justify-center h-screen w-full'>
+        <div className='flex flex-col gap-y-5 items-center justify-center h-screen w-full'>
+          <BrandLogo showName={false} className='animate-pulse' />
           <div className='flex flex-row items-center gap-x-2'>
             <LoaderIcon className='animate-spin' />
             Loading Auth ...

@@ -3,6 +3,7 @@
 import type { CheckUp } from "@/generated/prisma/client";
 import {
   CalendarIcon,
+  CircleCheckBigIcon,
   Grid2x2PlusIcon,
   LifeBuoyIcon,
   StethoscopeIcon,
@@ -29,31 +30,54 @@ const DashboardHistory = ({ data }: { data: CheckUp[] }) => {
               setSelected(checkUp);
               setOpen(true);
             }}
-            className='p-6 min-w-[300px] relative cursor-pointer dark:border-zinc-800 border-zinc-300 rounded-sm dark:shadow-2xl shadow-sm shadow-black/10 dark:shadow-white/5 bg-linear-to-br hover:bg-linear-to-bl from-zinc-200/10 dark:from-zinc-900/10 hover:dark:from-zinc-900/30 via-transparent to-neutral-400/20 dark:to-neutral-900/20 hover:dark:to-neutral-900/40 backdrop-blur-sm text-card-foreground transition-all duration-300 ease-in-out flex flex-col opacity-80 hover:opacity-100'
+            className='p-6 bg-accent/10 dark:bg-accent/20 backdrop-blur-sm rounded-md shadow-xs border-b cursor-pointer hover:bg-accent/30 transition-all duration-200 ease-in-out hover:scale-[0.97] relative overflow-hidden'
           >
-            <p className='text-[11px] absolute top-0 right-0 px-2 py-0.5 tracking-wider  bg-linear-to-r dark:from-teal-500 from-teal-600 dark:to-slate-700 to-slate-500  text-white text-shadow-2xs rounded-bl-sm rounded-tr-sm w-fit border-b ml-auto'>
+            <span className='absolute h-full w-1 bg-linear-to-b from-slate-300 dark:from-slate-600 dark:to-neutral-800 to-neutral-400/70 left-0 inset-y-0 rounded-l-md' />
+
+            <p className='text-[11px] absolute top-0 right-0 px-2 py-0.5 tracking-wider bg-[#ccfbf1] dark:bg-[#003d30] text-emerald-600 dark:text-[#ccfbf1] text-shadow-2xs rounded-bl-sm rounded-tr-sm w-fit border-b ml-auto'>
               ID: {checkUp.id}
             </p>
-            <div className='dark:text-neutral-300 text-cyan-500 font-medium text-sm flex items-center gap-x-3 mt-3'>
-              <span className='flex font-medium tracking-wide items-center gap-x-1 dark:text-blue-300 text-blue-500'>
+            <div className='shadow-2xs dark:shadow-xl p-2 rounded-md flex gap-x-3 mt-2'>
+              <span className='size-8 bg-blue-200 dark:bg-blue-700 text-blue-500 dark:text-blue-100 flex items-center justify-center rounded-sm shadow-inner'>
                 {" "}
-                <CalendarIcon className='size-3.5' /> Date:
+                <CalendarIcon className='size-3.5' />
               </span>{" "}
-              <p className='text-sm tracking-wide'>
-                {checkUp.createdAt.toLocaleString()}
-              </p>
+              <div className='flex flex-col'>
+                <p className='text-xs font-medium text-muted-foreground dark:text-neutral-300 tracking-wide'>
+                  Date:
+                </p>
+                <p className='text-sm font-medium text-slate-400'>
+                  {checkUp.createdAt.toLocaleString()}
+                </p>
+              </div>
             </div>
-            <div className='dark:text-neutral-300 text-cyan-500 text-sm flex items-center gap-x-3 mt-1'>
-              <span className='dark:text-blue-300 text-blue-500 font-medium tracking-wide flex items-center gap-x-1'>
-                <LifeBuoyIcon className='size-3.5' /> Condition:
+            <div className='shadow-2xs dark:shadow-xl p-2 rounded-md flex gap-x-3 mt-2'>
+              <span className='size-8 bg-orange-100 dark:bg-orange-500 text-orange-500 dark:text-orange-100 flex items-center justify-center rounded-sm shadow-inner'>
+                {" "}
+                <StethoscopeIcon className='size-3.5' />
               </span>{" "}
-              <p className='text-sm text-shadow-2xs'>{checkUp.condition}</p>
+              <div className='flex flex-col'>
+                <p className='text-xs dark:text-neutral-300 font-medium text-muted-foreground'>
+                  Condition
+                </p>
+                <p className='text-sm font-medium text-orange-700 dark:text-orange-200/70'>
+                  {checkUp.createdAt.toLocaleString()}
+                </p>
+              </div>
             </div>
-            <div className='dark:text-neutral-300 text-cyan-500 text-sm flex items-center gap-x-3 mt-1'>
-              <span className='dark:text-blue-300 text-blue-500 flex items-center gap-x-1 font-medium tracking-wide'>
-                <Grid2x2PlusIcon className='size-3.5' /> Treatment Needed:
+            <div className='shadow-2xs dark:shadow-xl p-2 rounded-md flex gap-x-3 mt-2'>
+              <span className='size-8 bg-emerald-100 dark:bg-emerald-600 text-emerald-600 dark:text-emerald-100 flex items-center justify-center rounded-sm shadow'>
+                {" "}
+                <CircleCheckBigIcon className='size-3.5' />
               </span>{" "}
-              <p className='text-sm'>{checkUp.treatment}</p>
+              <div className='flex flex-col'>
+                <p className='text-xs dark:text-neutral-300 font-medium text-muted-foreground'>
+                  Treatment Needed
+                </p>
+                <p className='text-sm font-medium text-emerald-500 dark:text-emerald-300/80'>
+                  {checkUp.createdAt.toLocaleString()}
+                </p>
+              </div>
             </div>
           </div>
         ))}

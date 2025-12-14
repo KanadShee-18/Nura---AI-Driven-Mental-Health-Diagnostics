@@ -21,6 +21,7 @@ import {
   User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 type Step = "input" | "processing" | "result";
 
@@ -46,10 +47,33 @@ export const TestimonialImage = () => {
   };
 
   return (
-    <div id='tryitout' className='relative w-full max-w-md mx-auto mt-10'>
-      {/* Decorative background elements */}
+    <div
+      id='tryitout'
+      className='relative w-full max-w-md mx-auto mt-10 md:w-md'
+    >
       <div className='absolute -top-10 -left-10 w-32 h-32 bg-primary/20 rounded-full blur-3xl' />
       <div className='absolute -bottom-10 -right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl' />
+
+      <div className='absolute -left-full rounded mask-radial-from-20% mask-l-to-90% dark:mask-b-to-99% mask-t-from-80%'>
+        <Image
+          src={"/mental-halth-2.png"}
+          alt='mental-health-img'
+          width={500}
+          height={500}
+          unoptimized
+          className='rounded opacity-30'
+        />
+      </div>
+      <div className='absolute -right-full rounded mask-radial-from-20% mask-r-to-95% dark:mask-b-to-99% mask-t-from-80% top-1/2 -translate-y-1/2'>
+        <Image
+          src={"/mental-halth-1.png"}
+          alt='mental-health-img'
+          width={500}
+          height={700}
+          unoptimized
+          className='opacity-30'
+        />
+      </div>
 
       <Card className='relative overflow-hidden border-primary/10 shadow-sm dark:shadow-xl backdrop-blur-sm bg-card/95'>
         <CardHeader>
@@ -65,13 +89,17 @@ export const TestimonialImage = () => {
           <CardDescription>Instant analysis powered by Nura AI</CardDescription>
         </CardHeader>
 
-        <CardContent className='min-h-[300px]'>
+        <CardContent className='min-h-75'>
           <AnimatePresence mode='wait'>
             {step === "input" && (
               <motion.div
                 key='input'
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
+                transition={{
+                  duration: 0.5,
+                  delay: 0.4,
+                }}
                 exit={{ opacity: 0, x: 20 }}
                 className='space-y-6'
               >
