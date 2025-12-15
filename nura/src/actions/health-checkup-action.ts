@@ -40,17 +40,19 @@ export const healthCheckUp = async (
     const { data } = checkUpValues;
 
     const apiPayload = {
-      Age: data.age.toString(),
       Gender: data.gender,
-      work_interfere: data.work_interfere,
-      family_history: data.family_history,
-      benefits: data.benefits,
-      care_options: data.care_options,
-      leave: data.leave,
-      mental_health_consequence: data.mental_health_consequence,
-      self_employed: data.self_employed,
-      mental_health_interview: data.mental_health_interview,
-      yoga: data.yoga,
+      Occupation: data.occupation,
+      SelfEmployed: data.selfEmployed,
+      FamilyHistory: data.familyHistory,
+      MentalHealthHistory: data.pastHistory,
+      DaysIndoors: data.spendIndoors,
+      HabitsChange: data.habitChange,
+      IncreasingStress: data.increasingStressLevel,
+      SocialWeakness: data.sociallyWeak,
+      CopingStruggles: data.faceDailyProblem,
+      WorkInterest: data.findInterestInWork,
+      MentalHealthInterview: data.takenMentalHealthInterview,
+      CareOptions: data.awareAboutCareOption,
     };
 
     const resp = await axios.post(
@@ -64,32 +66,25 @@ export const healthCheckUp = async (
       }
     );
 
-    const { predicted_condition, treatment_needed } = resp.data;
+    const { predicted_mood_swings, treatment_needed } = resp.data;
 
     await prisma.checkUp.create({
       data: {
         userId: user.id,
-        age: data.age,
         gender: data.gender,
-        selfEmployed: data.self_employed,
-        familyHistory: data.family_history,
-        workInterfere: data.work_interfere,
-        noEmployees: "Unknown",
-        remoteWork: "Unknown",
-        techCompany: "Unknown",
-        benefits: data.benefits,
-        careOptions: data.care_options,
-        wellnessProgram: "Unknown",
-        seekHelp: "Unknown",
-        leave: data.leave,
-        mentalHealthConsequence: data.mental_health_consequence,
-        physHealthConsequence: "Unknown",
-        mentalHealthInterview: data.mental_health_interview,
-        physHealthInterview: "Unknown",
-        mentalVsPhysical: "Unknown",
-        obsConsequence: "Unknown",
-        yoga: data.yoga,
-        condition: predicted_condition,
+        occupation: data.occupation,
+        selfEmployed: data.selfEmployed,
+        familyHistory: data.familyHistory,
+        pastHistory: data.pastHistory,
+        spendIndoors: data.spendIndoors,
+        habitChange: data.habitChange,
+        increasingStressLevel: data.increasingStressLevel,
+        sociallyWeak: data.sociallyWeak,
+        faceDailyProblem: data.faceDailyProblem,
+        findInterestInWork: data.findInterestInWork,
+        takenMentalHealthInterview: data.takenMentalHealthInterview,
+        awareAboutCareOption: data.awareAboutCareOption,
+        condition: predicted_mood_swings,
         treatment: treatment_needed,
       },
     });
@@ -100,7 +95,7 @@ export const healthCheckUp = async (
       success: true,
       message: "Check up completed successfully!",
       data: {
-        condition: predicted_condition,
+        condition: predicted_mood_swings,
         treatment: treatment_needed,
       },
     };

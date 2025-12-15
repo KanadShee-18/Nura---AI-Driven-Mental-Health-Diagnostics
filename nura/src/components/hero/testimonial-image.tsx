@@ -61,7 +61,7 @@ export const TestimonialImage = () => {
           width={500}
           height={500}
           unoptimized
-          className='rounded opacity-30'
+          className='rounded opacity-30 max-w-125 max-h-125 w-auto h-auto hover:opacity-40 hover:scale-105 transition-all duration-500 ease-in-out'
         />
       </div>
       <div className='absolute -right-full rounded mask-radial-from-20% mask-r-to-95% dark:mask-b-to-99% mask-t-from-80% top-1/2 -translate-y-1/2'>
@@ -71,7 +71,7 @@ export const TestimonialImage = () => {
           width={500}
           height={700}
           unoptimized
-          className='opacity-30'
+          className='opacity-30 w-auto h-auto max-w-125 max-h-125 hover:opacity-40 hover:scale-105 transition-all duration-500 ease-in-out'
         />
       </div>
 
@@ -82,7 +82,7 @@ export const TestimonialImage = () => {
               <BrainCircuit className='w-5 h-5' />
             </div>
             <span className='text-xs font-medium text-primary uppercase tracking-wider'>
-              AI Assessment
+              Mental Health Assessment
             </span>
           </div>
           <CardTitle>Wellness Check</CardTitle>
@@ -105,21 +105,21 @@ export const TestimonialImage = () => {
               >
                 <div className='space-y-3'>
                   <label className='text-sm font-medium flex items-center gap-2 text-muted-foreground'>
-                    <User className='w-4 h-4' /> Age Group
+                    <User className='w-4 h-4' /> Gender
                   </label>
                   <div className='flex flex-wrap gap-2'>
-                    {["18-24", "25-34", "35-44", "45+"].map((age) => (
+                    {["Male", "Female", "Others"].map((gender) => (
                       <button
-                        key={age}
-                        onClick={() => setSelectedAge(age)}
+                        key={gender}
+                        onClick={() => setSelectedAge(gender)}
                         className={cn(
                           "px-3 py-1.5 text-sm rounded-full border transition-all",
-                          selectedAge === age
+                          selectedAge === gender
                             ? "bg-primary text-primary-foreground border-primary shadow-sm"
                             : "bg-background hover:bg-muted border-input"
                         )}
                       >
-                        {age}
+                        {gender}
                       </button>
                     ))}
                   </div>
@@ -149,7 +149,7 @@ export const TestimonialImage = () => {
 
                 <div className='space-y-3'>
                   <label className='text-sm font-medium flex items-center gap-2 text-muted-foreground'>
-                    <Calendar className='w-4 h-4' /> Work Days / Week
+                    <Calendar className='w-4 h-4' /> Spend in Indoors
                   </label>
                   <div className='grid grid-cols-3 gap-2'>
                     {["1-3 Days", "4-5 Days", "6+ Days"].map((days) => (
@@ -168,6 +168,10 @@ export const TestimonialImage = () => {
                     ))}
                   </div>
                 </div>
+
+                <div className='text-muted-foreground animate-pulse'>
+                  ... and more ...
+                </div>
               </motion.div>
             )}
 
@@ -177,7 +181,7 @@ export const TestimonialImage = () => {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.1 }}
-                className='flex flex-col items-center justify-center h-[300px] space-y-4'
+                className='flex flex-col items-center justify-center h-75 space-y-4'
               >
                 <div className='relative'>
                   <div className='absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse' />

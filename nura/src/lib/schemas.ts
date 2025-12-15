@@ -1,37 +1,42 @@
 import { z } from "zod";
 
 export const mentalHealthSchema = z.object({
-  age: z
-    .number()
-    .int()
-    .min(10, "Age must be at least 10")
-    .max(100, "Age must be less than or equal to 100"),
-
   gender: z.enum(["Male", "Female", "Other"]),
 
-  work_interfere: z.enum(["Often", "Rarely", "Never", "Sometimes"]),
-
-  family_history: z.enum(["Yes", "No"]),
-
-  benefits: z.enum(["Yes", "No", "Don't know"]),
-
-  care_options: z.enum(["Yes", "No", "Not sure"]),
-
-  leave: z.enum([
-    "Very easy",
-    "Somewhat easy",
-    "Somewhat difficult",
-    "Very difficult",
-    "Don't know",
+  occupation: z.enum([
+    "Student",
+    "Corporate",
+    "Business",
+    "Housewife",
+    "Others",
   ]),
 
-  mental_health_consequence: z.enum(["Yes", "No", "Maybe"]),
+  selfEmployed: z.enum(["Yes", "No"]),
 
-  self_employed: z.enum(["Yes", "No"]),
+  familyHistory: z.enum(["Yes", "No", "Maybe"]),
+  pastHistory: z.enum(["Yes", "No", "Maybe"]),
 
-  mental_health_interview: z.enum(["Yes", "No", "Maybe"]),
+  spendIndoors: z.enum([
+    "1-14 Days",
+    "15-30 Days",
+    "31-60 Days",
+    "More than 2 months",
+    "Go out Every Day",
+  ]),
 
-  yoga: z.enum(["Yes", "No"]),
+  habitChange: z.enum(["Yes", "No", "Maybe"]),
+
+  increasingStressLevel: z.enum(["Yes", "No", "Maybe"]),
+
+  sociallyWeak: z.enum(["Yes", "No", "Maybe"]),
+
+  faceDailyProblem: z.enum(["Yes", "No"]),
+
+  findInterestInWork: z.enum(["Yes", "No", "Maybe"]),
+
+  takenMentalHealthInterview: z.enum(["Yes", "No", "Maybe"]),
+
+  awareAboutCareOption: z.enum(["Yes", "No", "Not Sure"]),
 });
 
 export type MentalHealthFormData = z.infer<typeof mentalHealthSchema>;

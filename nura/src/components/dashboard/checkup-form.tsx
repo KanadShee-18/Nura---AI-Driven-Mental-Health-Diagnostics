@@ -44,17 +44,19 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
   const form = useForm<MentalHealthFormData>({
     resolver: zodResolver(mentalHealthSchema),
     defaultValues: {
-      age: 24,
       gender: "Male",
-      family_history: "No",
-      yoga: "No",
-      self_employed: "No",
-      work_interfere: "Never",
-      care_options: "Not sure",
-      mental_health_interview: "No",
-      mental_health_consequence: "No",
-      leave: "Somewhat easy",
-      benefits: "Don't know",
+      occupation: "Corporate",
+      selfEmployed: "Yes",
+      faceDailyProblem: "Yes",
+      familyHistory: "No",
+      pastHistory: "Maybe",
+      spendIndoors: "1-14 Days",
+      habitChange: "Maybe",
+      increasingStressLevel: "Maybe",
+      sociallyWeak: "No",
+      findInterestInWork: "Maybe",
+      takenMentalHealthInterview: "No",
+      awareAboutCareOption: "No",
     },
   });
 
@@ -96,7 +98,7 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
 
   return (
     <Card className='p-6 md:my-10 my-5 max-w-md lg:max-w-lg mx-auto shadow-2xl'>
-      <h2 className='text-2xl font-semibold text-transparent bg-clip-text bg-linear-to-r dark:from-blue-50 from-blue-500 dark:via-blue-100 via-teal-600 dark:to-slate-200 to-slate-600'>
+      <h2 className='text-2xl font-semibold text-transparent bg-clip-text bg-linear-to-r dark:from-blue-300 from-blue-500 dark:via-teal-400 via-teal-600 dark:to-slate-300 to-slate-600'>
         Mental Well-Being Assessment
       </h2>
       {result && (
@@ -108,27 +110,7 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
-            {/* Age */}
-            <FormField
-              control={form.control}
-              name='age'
-              render={({ field }) => (
-                <FormItem>
-                  <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200'>
-                    What's Your Age?
-                  </p>
-                  <FormControl>
-                    <Input
-                      type='number'
-                      placeholder='Enter your age'
-                      {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {/* Gender Field */}
             <FormField
               control={form.control}
               name='gender'
@@ -153,69 +135,44 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
                 </FormItem>
               )}
             />
+            {/* Occupation */}
+            <FormField
+              control={form.control}
+              name='occupation'
+              render={({ field }) => (
+                <FormItem>
+                  <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200'>
+                    What is your Occupation?
+                  </p>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger className='w-full'>
+                        <SelectValue placeholder='Select Occupation' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value='Student'>Student</SelectItem>
+                      <SelectItem value='Corporate'>Corporate</SelectItem>
+                      <SelectItem value='Business'>Business</SelectItem>
+                      <SelectItem value='Housewife'>Housewife</SelectItem>
+                      <SelectItem value='Others'>Others</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
 
           <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
-            {/* Family History */}
-            <FormField
-              control={form.control}
-              name='family_history'
-              render={({ field }) => (
-                <FormItem>
-                  <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200'>
-                    Is there any family history related to mental health?
-                  </p>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger className='w-full'>
-                        <SelectValue placeholder='Select option' />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value='Yes'>Yes</SelectItem>
-                      <SelectItem value='No'>No</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Yoga */}
-            <FormField
-              control={form.control}
-              name='yoga'
-              render={({ field }) => (
-                <FormItem>
-                  <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200'>
-                    Do you practice Yoga for better mental health?
-                  </p>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger className='w-full'>
-                        <SelectValue placeholder='Select option' />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value='Yes'>Yes</SelectItem>
-                      <SelectItem value='No'>No</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-3 mt-10'>
             {/* Self Employed */}
             <FormField
               control={form.control}
-              name='self_employed'
+              name='selfEmployed'
               render={({ field }) => (
                 <FormItem>
-                  <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200'>
-                    Are you Self Employed (work from office/home)?
+                  <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200 h-10 lg:h-auto'>
+                    Are you Self-Employed?
                   </p>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
@@ -232,44 +189,14 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
                 </FormItem>
               )}
             />
-
-            {/* Work Interfere */}
+            {/* Face Daily Problem */}
             <FormField
               control={form.control}
-              name='work_interfere'
+              name='faceDailyProblem'
               render={({ field }) => (
                 <FormItem>
-                  <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200'>
-                    How often you feel mental health issue while working?
-                  </p>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger className='w-full'>
-                        <SelectValue placeholder='Select option' />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value='Often'>Often</SelectItem>
-                      <SelectItem value='Rarely'>Rarely</SelectItem>
-                      <SelectItem value='Never'>Never</SelectItem>
-                      <SelectItem value='Sometimes'>Sometimes</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
-            {/* Care Options */}
-            <FormField
-              control={form.control}
-              name='care_options'
-              render={({ field }) => (
-                <FormItem>
-                  <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200'>
-                    Availing any mental health care from your work station?
+                  <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200 h-10 lg:h-auto'>
+                    Struggle with daily problems?
                   </p>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
@@ -280,31 +207,6 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
                     <SelectContent>
                       <SelectItem value='Yes'>Yes</SelectItem>
                       <SelectItem value='No'>No</SelectItem>
-                      <SelectItem value='Not sure'>Not sure</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='mental_health_interview'
-              render={({ field }) => (
-                <FormItem>
-                  <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200'>
-                    Any Negative Feedback from recent mental health checkup?
-                  </p>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger className='w-full'>
-                        <SelectValue placeholder='Select option' />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value='Yes'>Yes</SelectItem>
-                      <SelectItem value='No'>No</SelectItem>
-                      <SelectItem value='Maybe'>Not Sure</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -314,14 +216,14 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
           </div>
 
           <div className='grid grid-cols-1 md:grid-cols-2 gap-3 mt-10'>
-            {/* Mental health consequence */}
+            {/* Family History */}
             <FormField
               control={form.control}
-              name='mental_health_consequence'
+              name='familyHistory'
               render={({ field }) => (
                 <FormItem>
                   <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200'>
-                    Feel any problem while sharing consequences?
+                    In your family does anyone face mental health issues?
                   </p>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
@@ -332,21 +234,20 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
                     <SelectContent>
                       <SelectItem value='Yes'>Yes</SelectItem>
                       <SelectItem value='No'>No</SelectItem>
-                      <SelectItem value='Maybe'>Not Sure</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            {/* Leave */}
+            {/* Past History */}
             <FormField
               control={form.control}
-              name='leave'
+              name='pastHistory'
               render={({ field }) => (
                 <FormItem>
                   <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200'>
-                    How easy it is to take a medical leave?
+                    Any past history of mental health issues?
                   </p>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
@@ -355,17 +256,69 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value='Very easy'>Very easy</SelectItem>
-                      <SelectItem value='Somewhat easy'>
-                        Somewhat easy
+                      <SelectItem value='Yes'>Yes</SelectItem>
+                      <SelectItem value='No'>No</SelectItem>
+                      <SelectItem value='Maybe'>Maybe</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-3 mt-10'>
+            {/* Spend Indoors */}
+            <FormField
+              control={form.control}
+              name='spendIndoors'
+              render={({ field }) => (
+                <FormItem>
+                  <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200'>
+                    How many days do you typically stay in indoors?
+                  </p>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger className='w-full'>
+                        <SelectValue placeholder='Select option' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value='1-14 Days'>1-14 Days</SelectItem>
+                      <SelectItem value='15-30 Days'>15-30 Days</SelectItem>
+                      <SelectItem value='31-60 Days'>31-60 Days</SelectItem>
+                      <SelectItem value='More than 2 Months'>
+                        More than 2 Months
                       </SelectItem>
-                      <SelectItem value='Somewhat difficult'>
-                        Somewhat difficult
+                      <SelectItem value='Go out Every day'>
+                        Go Out Everyday
                       </SelectItem>
-                      <SelectItem value='Very difficult'>
-                        Very difficult
-                      </SelectItem>
-                      <SelectItem value="Don't know">Don't know</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Change in Habit */}
+            <FormField
+              control={form.control}
+              name='habitChange'
+              render={({ field }) => (
+                <FormItem>
+                  <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200'>
+                    Noticed any significant changes in your habits?
+                  </p>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger className='w-full'>
+                        <SelectValue placeholder='Select option' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value='Yes'>Yes</SelectItem>
+                      <SelectItem value='No'>No</SelectItem>
+                      <SelectItem value='Maybe'>Maybe</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -375,14 +328,14 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
           </div>
 
           <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
-            {/* Benefits */}
+            {/* Increasing Stress Level */}
             <FormField
               control={form.control}
-              name='benefits'
+              name='increasingStressLevel'
               render={({ field }) => (
                 <FormItem>
                   <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200'>
-                    Does your employer provide mental health benefits?
+                    Do you feel your stress levels are increasing?
                   </p>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
@@ -393,7 +346,111 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
                     <SelectContent>
                       <SelectItem value='Yes'>Yes</SelectItem>
                       <SelectItem value='No'>No</SelectItem>
-                      <SelectItem value="Don't know">Don't know</SelectItem>
+                      <SelectItem value='Maybe'>Maybe</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* Socially Weak */}
+            <FormField
+              control={form.control}
+              name='sociallyWeak'
+              render={({ field }) => (
+                <FormItem>
+                  <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200'>
+                    Do you feel socially weak or isolated?
+                  </p>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger className='w-full'>
+                        <SelectValue placeholder='Select option' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value='Yes'>Yes</SelectItem>
+                      <SelectItem value='No'>No</SelectItem>
+                      <SelectItem value='Maybe'>Maybe</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-3 mt-10'>
+            {/* Interest in work */}
+            <FormField
+              control={form.control}
+              name='findInterestInWork'
+              render={({ field }) => (
+                <FormItem>
+                  <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200'>
+                    Do you find any interest in your work?
+                  </p>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger className='w-full'>
+                        <SelectValue placeholder='Select option' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value='Yes'>Yes</SelectItem>
+                      <SelectItem value='No'>No</SelectItem>
+                      <SelectItem value='Maybe'>Maybe</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* Mental Health Interview */}
+            <FormField
+              control={form.control}
+              name='takenMentalHealthInterview'
+              render={({ field }) => (
+                <FormItem>
+                  <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200'>
+                    Part of any mental health–related interview ever?
+                  </p>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger className='w-full'>
+                        <SelectValue placeholder='Select option' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value='Yes'>Yes</SelectItem>
+                      <SelectItem value='No'>No</SelectItem>
+                      <SelectItem value='Maybe'>Maybe</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
+            <FormField
+              control={form.control}
+              name='awareAboutCareOption'
+              render={({ field }) => (
+                <FormItem>
+                  <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200'>
+                    Are you aware about your mental health care options?
+                  </p>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger className='w-full'>
+                        <SelectValue placeholder='Select option' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value='Yes'>Yes</SelectItem>
+                      <SelectItem value='No'>No</SelectItem>
+                      <SelectItem value='Not Sure'>Not Sure</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

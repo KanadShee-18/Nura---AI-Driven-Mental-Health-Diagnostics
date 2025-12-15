@@ -2,7 +2,7 @@ import { BrandLogo } from "@/components/common/brand-logo";
 import { Container } from "@/components/common/container";
 import { CheckUpForm } from "@/components/dashboard/checkup-form";
 import { getServerSession, requireAuth } from "@/lib/get-session";
-import { LoaderIcon } from "lucide-react";
+import { LoaderIcon, StethoscopeIcon } from "lucide-react";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -32,9 +32,10 @@ const CheckUpPage = async () => {
       <div className='fixed md:flex hidden inset-0 -z-5 h-full w-full bg-linear-to-br from-teal-400/40 via-transparent to-cyan-400/45 mask-b-from-0% mask-t-from-20% rotate-45 scale-200'></div>
 
       <Container className=' pt-5'>
-        <h2 className='text-2xl font-semibold text-primary text-shadow-2xs'>
-          Check Up
-        </h2>
+        <div className='flex flex-row gap-x-2 text-primary items-center'>
+          <StethoscopeIcon className='text-2xl' />
+          <h2 className='text-2xl font-semibold text-shadow-2xs'>Check Up</h2>
+        </div>
         <p className='text-sm font-medium text-muted-foreground'>
           Fill out some basic details to get a mental health report
         </p>

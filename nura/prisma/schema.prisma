@@ -74,32 +74,22 @@ model Verification {
 model CheckUp {
   id String @id @default(cuid())
 
-  age                     Int
-  gender                  String
-  selfEmployed            String
-  familyHistory           String
-  workInterfere           String
-  noEmployees             String
-  remoteWork              String
-  techCompany             String
-  benefits                String
-  careOptions             String
-  wellnessProgram         String
-  seekHelp                String
-  anonymity               String?
-  leave                   String
-  mentalHealthConsequence String
-  physHealthConsequence   String
-  coworkers               String?
-  supervisor              String?
-  mentalHealthInterview   String
-  physHealthInterview     String
-  mentalVsPhysical        String
-  obsConsequence          String
-  yoga                    String?
+  gender                     String
+  occupation                 String
+  selfEmployed               String
+  familyHistory              String
+  pastHistory                String
+  spendIndoors               String
+  habitChange                String
+  increasingStressLevel      String
+  sociallyWeak               String
+  faceDailyProblem           String
+  findInterestInWork         String
+  takenMentalHealthInterview String
+  awareAboutCareOption       String
 
-  condition String?
   treatment String?
+  condition String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -1,19 +1,17 @@
 "use client";
 
-import type { CheckUp } from "@/generated/prisma/client";
-import {
-  CalendarIcon,
-  CircleCheckBigIcon,
-  Grid2x2PlusIcon,
-  LifeBuoyIcon,
-  StethoscopeIcon,
-} from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import type { CheckUp } from "@/generated/prisma/client";
+import {
+  CalendarIcon,
+  CircleCheckBigIcon,
+  StethoscopeIcon,
+} from "lucide-react";
 import { useState } from "react";
 
 const DashboardHistory = ({ data }: { data: CheckUp[] }) => {
@@ -58,7 +56,7 @@ const DashboardHistory = ({ data }: { data: CheckUp[] }) => {
               </span>{" "}
               <div className='flex flex-col'>
                 <p className='text-xs dark:text-neutral-300 font-medium text-muted-foreground'>
-                  Condition
+                  Condition - Mood Swing Level
                 </p>
                 <p className='text-sm font-medium text-orange-700 dark:text-orange-200/70'>
                   {checkUp.condition}
@@ -96,22 +94,34 @@ const DashboardHistory = ({ data }: { data: CheckUp[] }) => {
 
               <div className='space-y-2 text-sm'>
                 <p>
-                  <strong>Checkup ID:</strong> {selected.id}
+                  <strong className='dark:text-slate-300 text-slate-600 tracking-wide'>
+                    Checkup ID:
+                  </strong>{" "}
+                  {selected.id}
                 </p>
                 <p>
-                  <strong>Date:</strong> {selected.createdAt.toLocaleString()}
+                  <strong className='dark:text-slate-300 text-slate-600 tracking-wide'>
+                    Date:
+                  </strong>{" "}
+                  {selected.createdAt.toLocaleString()}
                 </p>
                 <p>
-                  <strong>Condition:</strong> {selected.condition}
+                  <strong className='dark:text-slate-300 text-slate-600 tracking-wide'>
+                    Mood Swing Level:
+                  </strong>{" "}
+                  {selected.condition}
                 </p>
                 <p>
-                  <strong>Treatment:</strong> {selected.treatment}
+                  <strong className='dark:text-slate-300 text-slate-600 tracking-wide'>
+                    Treatment or Consultancy Required:
+                  </strong>{" "}
+                  {selected.treatment}
                 </p>
                 <p>
-                  <strong>Age:</strong> {selected.age}
-                </p>
-                <p>
-                  <strong>Gender:</strong> {selected.gender}
+                  <strong className='dark:text-slate-300 text-slate-600 tracking-wide'>
+                    Gender:
+                  </strong>{" "}
+                  {selected.gender}
                 </p>
               </div>
             </>

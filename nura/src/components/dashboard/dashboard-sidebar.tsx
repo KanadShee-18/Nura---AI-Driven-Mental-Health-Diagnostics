@@ -134,7 +134,7 @@ export const AppSidebar = ({
         <SidebarMenu className='bg-accent rounded-sm font-medium'>
           <SidebarMenuItem>
             <SidebarMenuButton
-              tooltip={"Profile"}
+              tooltip={"Account"}
               className='gap-x-4 px-4 h-auto py-2'
               onClick={() => router.push("/dashboard/profile")}
             >
