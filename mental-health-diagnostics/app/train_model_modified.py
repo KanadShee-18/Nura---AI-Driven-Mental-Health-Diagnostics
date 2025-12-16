@@ -19,7 +19,7 @@ def train():
     df, encoders = preprocess_data(os.path.join(DATA_DIR, 'Mental Health dataset.csv'), encoders_path=os.path.join(MODELS_DIR, 'encoders_modified.pkl'), is_training=True)
     
     # Define targets
-    target_cols = ['MoodSwings', 'Treatment']
+    target_cols = ['Treatment']
     
     # Define features: Use only the columns that were encoded (numeric)
     # This automatically excludes 'Country' and targets (since they weren't in categorical_cols of data_utils)
@@ -30,27 +30,14 @@ def train():
     X = df[feature_cols]
     joblib.dump(feature_cols, os.path.join(MODELS_DIR, 'feature_cols_modified.pkl'))
     
-    y_mood = df['MoodSwings']
     y_treatment = df['Treatment']
     
     # Encode targets
-    le_mood = LabelEncoder()
-    y_mood_encoded = le_mood.fit_transform(y_mood)
-    
     le_treatment = LabelEncoder()
     y_treatment_encoded = le_treatment.fit_transform(y_treatment)
     
     # Save target encoders
-    joblib.dump(le_mood, os.path.join(MODELS_DIR, 'le_mood_modified.pkl'))
     joblib.dump(le_treatment, os.path.join(MODELS_DIR, 'le_treatment_modified.pkl'))
-    
-    # --- Training MoodSwings Model ---
-    print("\nTraining MoodSwings Model (Supervised with Tuning)...")
-    
-    X_train, X_test, y_train, y_test = train_test_split(X, y_mood_encoded, test_size=0.2, random_state=42)
-    
-    # Using RandomForest with class_weight='balanced' to handle imbalance
-    rf = RandomForestClassifier(random_state=42, class_weight='balanced')
     
     # Hyperparameter tuning
     param_grid = {
@@ -59,18 +46,6 @@ def train():
         'min_samples_split': [2, 5],
         'min_samples_leaf': [1, 2]
     }
-    
-    grid_search = GridSearchCV(estimator=rf, param_grid=param_grid, cv=3, n_jobs=-1, verbose=1)
-    grid_search.fit(X_train, y_train)
-    
-    best_rf = grid_search.best_estimator_
-    print(f"Best parameters for MoodSwings Model: {grid_search.best_params_}")
-    
-    y_pred = best_rf.predict(X_test)
-    print("MoodSwings Model Accuracy:", accuracy_score(y_test, y_pred))
-    print(classification_report(y_test, y_pred, target_names=le_mood.classes_, zero_division=0))
-    
-    joblib.dump(best_rf, os.path.join(MODELS_DIR, 'moodswings_model_modified.pkl'))
     
     # --- Training Treatment Model ---
     print("\nTraining Treatment Model (Supervised with Tuning)...")

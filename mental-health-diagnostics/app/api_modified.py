@@ -35,9 +35,7 @@ MODELS_DIR = os.path.join(BASE_DIR, '..', 'models')
 # loading all the models here so we don't have to do it every time
 print("Loading models...")
 try:
-    mood_model = joblib.load(os.path.join(MODELS_DIR, 'moodswings_model_modified.pkl'))
     treatment_model = joblib.load(os.path.join(MODELS_DIR, 'treatment_model_modified.pkl'))
-    le_mood = joblib.load(os.path.join(MODELS_DIR, 'le_mood_modified.pkl'))
     le_treatment = joblib.load(os.path.join(MODELS_DIR, 'le_treatment_modified.pkl'))
     encoders = joblib.load(os.path.join(MODELS_DIR, 'encoders_modified.pkl'))
     feature_cols = joblib.load(os.path.join(MODELS_DIR, 'feature_cols_modified.pkl'))
@@ -59,6 +57,7 @@ class PatientData(BaseModel):
     WorkInterest: str
     MentalHealthInterview: str
     CareOptions: str
+    MoodSwings: str = "Medium" # Default value if not provided
 
 @app.get("/")
 def read_root():
@@ -90,17 +89,12 @@ def predict_condition(data: PatientData, x_api_key: str = Header(None)):
     
     # --- time to predict! ---
     try:
-        # Mood Swings (Condition proxy)
-        mood_idx = mood_model.predict(X)[0]
-        mood = le_mood.inverse_transform([mood_idx])[0]
-        
         # Treatment
         treat_idx = treatment_model.predict(X)[0]
         treatment = le_treatment.inverse_transform([treat_idx])[0]
         
         return {
             "success": True,
-            "predicted_mood_swings": mood,
             "treatment_needed": treatment
         }
     except Exception as e:

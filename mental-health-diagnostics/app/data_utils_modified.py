@@ -26,7 +26,7 @@ def preprocess_data(filepath, encoders_path='../models/encoders_modified.pkl', i
     categorical_cols = ['Gender', 'Occupation', 'SelfEmployed', 'FamilyHistory', 
                         'MentalHealthHistory', 'DaysIndoors', 'HabitsChange', 
                         'IncreasingStress', 'SocialWeakness', 'CopingStruggles', 
-                        'WorkInterest', 'MentalHealthInterview', 'CareOptions']
+                        'WorkInterest', 'MentalHealthInterview', 'CareOptions', 'MoodSwings']
     
     # Filter only columns that exist in the dataframe
     existing_cat_cols = [col for col in categorical_cols if col in df.columns]

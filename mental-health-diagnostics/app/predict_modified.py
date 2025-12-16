@@ -21,7 +21,8 @@ def get_user_input(feature_cols, encoders):
         'CopingStruggles': "Do you struggle with coping with daily problems? (Yes/No)",
         'WorkInterest': "Do you still find interest in your work? (Yes/No/Maybe)",
         'MentalHealthInterview': "Would you bring up a mental health issue in an interview? (Yes/No/Maybe)",
-        'CareOptions': "Are you aware of mental health care options? (Yes/No/Not sure)"
+        'CareOptions': "Are you aware of mental health care options? (Yes/No/Not sure)",
+        'MoodSwings': "How would you describe your mood swings? (Low/Medium/High)"
     }
 
     for col in feature_cols:
@@ -39,9 +40,7 @@ def predict():
 
     print("Loading models...")
     try:
-        mood_model = joblib.load(os.path.join(MODELS_DIR, 'moodswings_model_modified.pkl'))
         treatment_model = joblib.load(os.path.join(MODELS_DIR, 'treatment_model_modified.pkl'))
-        le_mood = joblib.load(os.path.join(MODELS_DIR, 'le_mood_modified.pkl'))
         le_treatment = joblib.load(os.path.join(MODELS_DIR, 'le_treatment_modified.pkl'))
         encoders = joblib.load(os.path.join(MODELS_DIR, 'encoders_modified.pkl'))
         feature_cols = joblib.load(os.path.join(MODELS_DIR, 'feature_cols_modified.pkl'))
@@ -62,10 +61,6 @@ def predict():
     X = df[feature_cols]
     
     print("\n--- Prediction Results ---")
-    
-    mood_idx = mood_model.predict(X)[0]
-    mood = le_mood.inverse_transform([mood_idx])[0]
-    print(f"Predicted Mood Swing Level: {mood}")
     
     treat_idx = treatment_model.predict(X)[0]
     treatment = le_treatment.inverse_transform([treat_idx])[0]

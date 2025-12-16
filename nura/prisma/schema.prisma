@@ -81,6 +81,7 @@ model CheckUp {
   pastHistory                String
   spendIndoors               String
   habitChange                String
+  moodSwings                 String
   increasingStressLevel      String
   sociallyWeak               String
   faceDailyProblem           String
@@ -89,7 +90,6 @@ model CheckUp {
   awareAboutCareOption       String
 
   treatment String?
-  condition String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

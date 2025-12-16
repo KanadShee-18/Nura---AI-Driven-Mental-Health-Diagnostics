@@ -50,20 +50,6 @@ const DashboardHistory = ({ data }: { data: CheckUp[] }) => {
               </div>
             </div>
             <div className='shadow-2xs dark:shadow-xl p-2 rounded-md flex gap-x-3 mt-2'>
-              <span className='size-8 bg-orange-100 dark:bg-orange-500 text-orange-500 dark:text-orange-100 flex items-center justify-center rounded-sm shadow-inner'>
-                {" "}
-                <StethoscopeIcon className='size-3.5' />
-              </span>{" "}
-              <div className='flex flex-col'>
-                <p className='text-xs dark:text-neutral-300 font-medium text-muted-foreground'>
-                  Condition - Mood Swing Level
-                </p>
-                <p className='text-sm font-medium text-orange-700 dark:text-orange-200/70'>
-                  {checkUp.condition}
-                </p>
-              </div>
-            </div>
-            <div className='shadow-2xs dark:shadow-xl p-2 rounded-md flex gap-x-3 mt-2'>
               <span className='size-8 bg-emerald-100 dark:bg-emerald-600 text-emerald-600 dark:text-emerald-100 flex items-center justify-center rounded-sm shadow'>
                 {" "}
                 <CircleCheckBigIcon className='size-3.5' />
@@ -107,12 +93,6 @@ const DashboardHistory = ({ data }: { data: CheckUp[] }) => {
                 </p>
                 <p>
                   <strong className='dark:text-slate-300 text-slate-600 tracking-wide'>
-                    Mood Swing Level:
-                  </strong>{" "}
-                  {selected.condition}
-                </p>
-                <p>
-                  <strong className='dark:text-slate-300 text-slate-600 tracking-wide'>
                     Treatment or Consultancy Required:
                   </strong>{" "}
                   {selected.treatment}
@@ -123,6 +103,24 @@ const DashboardHistory = ({ data }: { data: CheckUp[] }) => {
                   </strong>{" "}
                   {selected.gender}
                 </p>
+                {selected.treatment?.toLowerCase() === "yes" && (
+                  <div className='space-y-3 my-5 p-2 bg-accent/30 shadow-sm rounded-md'>
+                    <p className='text-sm'>
+                      Based on your responses, there may be indicators that
+                      professional mental health support could be helpful.
+                    </p>
+                    <ul className='list-disc pl-5 text-sm text-muted-foreground space-y-1'>
+                      <li>Maintain a regular sleep schedule</li>
+                      <li>Engage in regular physical activity</li>
+                      <li>Manage daily stress through planning and breaks</li>
+                      <li>Stay socially connected with friends or family</li>
+                      <li>
+                        Practice simple relaxation techniques such as deep
+                        breathing or mindfulness
+                      </li>
+                    </ul>
+                  </div>
+                )}
               </div>
             </>
           )}

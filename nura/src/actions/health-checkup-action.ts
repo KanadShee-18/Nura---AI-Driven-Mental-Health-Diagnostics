@@ -49,6 +49,7 @@ export const healthCheckUp = async (
       HabitsChange: data.habitChange,
       IncreasingStress: data.increasingStressLevel,
       SocialWeakness: data.sociallyWeak,
+      MoodSwings: data.moodSwings,
       CopingStruggles: data.faceDailyProblem,
       WorkInterest: data.findInterestInWork,
       MentalHealthInterview: data.takenMentalHealthInterview,
@@ -68,9 +69,7 @@ export const healthCheckUp = async (
 
     console.log("Response from model api: ", resp.data);
 
-    const { predicted_mood_swings, treatment_needed, success } = resp.data;
-
-    console.log({ predicted_mood_swings, treatment_needed, success });
+    const { treatment_needed, success } = resp.data;
 
     if (success) {
       await prisma.checkUp.create({
@@ -89,7 +88,7 @@ export const healthCheckUp = async (
           findInterestInWork: data.findInterestInWork,
           takenMentalHealthInterview: data.takenMentalHealthInterview,
           awareAboutCareOption: data.awareAboutCareOption,
-          condition: predicted_mood_swings,
+          moodSwings: data.moodSwings,
           treatment: treatment_needed,
         },
       });
@@ -100,7 +99,6 @@ export const healthCheckUp = async (
         success: true,
         message: "Check up completed successfully!",
         data: {
-          condition: predicted_mood_swings,
           treatment: treatment_needed,
         },
       };

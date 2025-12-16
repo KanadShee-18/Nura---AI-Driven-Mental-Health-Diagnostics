@@ -37,7 +37,6 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
   const [errMesg, setErrMesg] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [result, setResult] = useState<{
-    condition: string;
     treatment: string;
   } | null>(null);
 
@@ -52,6 +51,7 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
       pastHistory: "Maybe",
       spendIndoors: "1-14 Days",
       habitChange: "Maybe",
+      moodSwings: "Low",
       increasingStressLevel: "Maybe",
       sociallyWeak: "No",
       findInterestInWork: "Maybe",
@@ -81,7 +81,7 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
           setResult(null);
           router.push("/dashboard");
           router.refresh();
-        }, 5000);
+        }, 10000);
       }
     }
 
@@ -101,68 +101,8 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
       <h2 className='text-2xl font-semibold text-transparent bg-clip-text bg-linear-to-r dark:from-blue-300 from-blue-500 dark:via-teal-400 via-teal-600 dark:to-slate-300 to-slate-600'>
         Mental Well-Being Assessment
       </h2>
-      {/* {result && (
-        <div className='flex flex-col gap-y-2.5'>
-          <p>{result.condition}</p>
-          <p>{result.treatment}</p>
-        </div>
-      )} */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
-          {result && (
-            <motion.div
-              key='result'
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className='space-y-6 mb-10 p-4 shadow-sm dark:bg-neutral-200bg-neutral-900  rounded-md'
-            >
-              <div className='p-4 rounded-lg bg-green-500/10 border border-green-500/40 flex items-start gap-3'>
-                <CheckCircle2 className='w-5 h-5 text-green-500 mt-0.5' />
-                <div>
-                  <h4 className='font-semibold text-green-700 dark:text-green-400'>
-                    Analysis Complete
-                  </h4>
-                  <p className='text-sm text-green-600/90 dark:text-green-400/90 mt-1'>
-                    Based on your responses, our model indicates that your
-                    condition/mood-swing-level is:{" "}
-                    <strong>{result.condition}</strong>.
-                  </p>
-                </div>
-              </div>
-
-              <div className='space-y-3'>
-                <h4 className='text-sm font-medium text-muted-foreground'>
-                  Analysis
-                </h4>
-                <div className='space-y-2'>
-                  <div className='flex items-center gap-3 p-3 rounded-md bg-muted/50 border'>
-                    <span className='text-sm'>Treatment Needed: </span>
-                    <div className='w-8 h-8 rounded-sm shadow bg-blue-500/10 flex items-center justify-center text-blue-500'>
-                      {result.treatment}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {errMesg && (
-            <motion.div
-              key='error'
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className='space-y-6'
-            >
-              <div className='p-4 rounded-lg bg-rose-500/10 border border-rose-500/40 flex items-start gap-3'>
-                <CheckCircle2 className='w-5 h-5 text-rose-400 mt-0.5' />
-                <div>
-                  <p className='text-sm text-rose-600/90 dark:text-rose-400/90 mt-1'>
-                    {errMesg}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          )}
           <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
             {/* Gender Field */}
             <FormField
@@ -322,14 +262,14 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
           </div>
 
           <div className='grid grid-cols-1 md:grid-cols-2 gap-3 mt-10'>
-            {/* Spend Indoors */}
+            {/* Mood Swings */}
             <FormField
               control={form.control}
-              name='spendIndoors'
+              name='moodSwings'
               render={({ field }) => (
                 <FormItem>
                   <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200'>
-                    How many days do you typically stay in indoors?
+                    How would you describe your mood swings?
                   </p>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
@@ -338,15 +278,9 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value='1-14 Days'>1-14 Days</SelectItem>
-                      <SelectItem value='15-30 Days'>15-30 Days</SelectItem>
-                      <SelectItem value='31-60 Days'>31-60 Days</SelectItem>
-                      <SelectItem value='More than 2 Months'>
-                        More than 2 Months
-                      </SelectItem>
-                      <SelectItem value='Go out Every day'>
-                        Go Out Everyday
-                      </SelectItem>
+                      <SelectItem value='Low'>Low</SelectItem>
+                      <SelectItem value='Medium'>Medium</SelectItem>
+                      <SelectItem value='High'>High</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -487,6 +421,37 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
             />
           </div>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
+            {/* Spend Indoors */}
+            <FormField
+              control={form.control}
+              name='spendIndoors'
+              render={({ field }) => (
+                <FormItem>
+                  <p className='text-sm tracking-wide text-shadow-2xs font-medium dark:text-neutral-200'>
+                    How many days do you typically stay in indoors?
+                  </p>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger className='w-full'>
+                        <SelectValue placeholder='Select option' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value='1-14 Days'>1-14 Days</SelectItem>
+                      <SelectItem value='15-30 Days'>15-30 Days</SelectItem>
+                      <SelectItem value='31-60 Days'>31-60 Days</SelectItem>
+                      <SelectItem value='More than 2 Months'>
+                        More than 2 Months
+                      </SelectItem>
+                      <SelectItem value='Go out Every day'>
+                        Go Out Everyday
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name='awareAboutCareOption'
@@ -512,6 +477,78 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
               )}
             />
           </div>
+
+          {result && (
+            <motion.div
+              key='result'
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className='space-y-6 mb-10 p-4 shadow-sm dark:bg-neutral-200bg-neutral-900  rounded-md'
+            >
+              <div className='p-4 rounded-lg bg-green-500/10 border border-green-500/40 flex items-start gap-3'>
+                <CheckCircle2 className='w-5 h-5 text-green-500 mt-0.5' />
+                <div>
+                  <h4 className='font-semibold text-green-700 dark:text-green-400'>
+                    Analysis Complete
+                  </h4>
+                </div>
+              </div>
+
+              <div className='space-y-3'>
+                <h4 className='text-sm font-medium text-muted-foreground'>
+                  Analysis:
+                </h4>
+                <div className='space-y-2'>
+                  <div className='flex items-center gap-3 p-3 rounded-md bg-muted/50 border'>
+                    <span className='text-sm'>Treatment Needed: </span>
+                    <div className='w-8 h-8 rounded-sm shadow bg-blue-500/10 flex items-center justify-center text-blue-500'>
+                      <div className='space-y-3'>
+                        <p className='text-sm text-foreground'>
+                          {result.treatment}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  {result.treatment.toLowerCase() === "yes" && (
+                    <div className='space-y-3 my-5'>
+                      <p className='text-sm'>
+                        Based on your responses, there may be indicators that
+                        professional mental health support could be helpful.
+                      </p>
+                      <ul className='list-disc pl-5 text-sm text-muted-foreground space-y-1'>
+                        <li>Maintain a regular sleep schedule</li>
+                        <li>Engage in regular physical activity</li>
+                        <li>Manage daily stress through planning and breaks</li>
+                        <li>Stay socially connected with friends or family</li>
+                        <li>
+                          Practice simple relaxation techniques such as deep
+                          breathing or mindfulness
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {errMesg && (
+            <motion.div
+              key='error'
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className='space-y-6'
+            >
+              <div className='p-4 rounded-lg bg-rose-500/10 border border-rose-500/40 flex items-start gap-3'>
+                <CheckCircle2 className='w-5 h-5 text-rose-400 mt-0.5' />
+                <div>
+                  <p className='text-sm text-rose-600/90 dark:text-rose-400/90 mt-1'>
+                    {errMesg}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
 
           <Button
             disabled={loading}

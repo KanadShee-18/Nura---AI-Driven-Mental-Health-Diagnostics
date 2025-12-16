@@ -26,6 +26,8 @@ export const mentalHealthSchema = z.object({
 
   habitChange: z.enum(["Yes", "No", "Maybe"]),
 
+  moodSwings: z.enum(["Low", "Medium", "High"]),
+
   increasingStressLevel: z.enum(["Yes", "No", "Maybe"]),
 
   sociallyWeak: z.enum(["Yes", "No", "Maybe"]),

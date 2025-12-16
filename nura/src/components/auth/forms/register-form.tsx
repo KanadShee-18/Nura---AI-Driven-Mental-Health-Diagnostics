@@ -62,6 +62,8 @@ export const RegisterForm = () => {
     useState<boolean>(false);
 
   const [errMesg, setErrMesg] = useState<string | null>(null);
+  const [oauthGoogleLoading, setOauthGoogleLoading] = useState<boolean>(false);
+  const [oauthGithubLoading, setOauthGithubLoading] = useState<boolean>(false);
   const [successMesg, setSuccessMesg] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof signUpSchema>>({
@@ -103,10 +105,19 @@ export const RegisterForm = () => {
     setSuccessMesg(null);
     setErrMesg(null);
 
+    if (provider === "google") {
+      setOauthGoogleLoading(true);
+    } else {
+      setOauthGithubLoading(true);
+    }
+
     const { error } = await authClient.signIn.social({
       provider,
       callbackURL: "/dashboard",
     });
+
+    setOauthGithubLoading(false);
+    setOauthGoogleLoading(false);
 
     if (error) {
       setErrMesg(error.message ?? "Something went wrong!");
@@ -242,7 +253,9 @@ export const RegisterForm = () => {
                     </p>
                   )}
                   <Button
-                    disabled={isPending}
+                    disabled={
+                      isPending || oauthGithubLoading || oauthGoogleLoading
+                    }
                     type='submit'
                     className='w-full mt-5'
                   >
@@ -267,19 +280,29 @@ export const RegisterForm = () => {
             <CardFooter className='flex flex-col'>
               <div className='w-full flex items-center gap-2.5'>
                 <Button
+                  type='button'
                   onClick={() => handleSocialSignIn("google")}
                   variant={"outline"}
                   className='flex-1'
                 >
-                  <FcGoogle />
+                  {oauthGoogleLoading ? (
+                    <LoaderIcon className='animate-spin' />
+                  ) : (
+                    <FcGoogle />
+                  )}
                   Google
                 </Button>
                 <Button
+                  type='button'
                   onClick={() => handleSocialSignIn("github")}
                   variant={"outline"}
                   className='flex-1'
                 >
-                  <FaGithub />
+                  {oauthGithubLoading ? (
+                    <LoaderIcon className='animate-spin' />
+                  ) : (
+                    <FaGithub />
+                  )}
                   GitHub
                 </Button>
               </div>

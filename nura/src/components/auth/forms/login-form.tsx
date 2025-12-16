@@ -1,6 +1,7 @@
 "use client";
 
 import { Container } from "@/components/common/container";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -15,26 +16,25 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import z from "zod";
 import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth-client";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ChevronRightIcon,
   EyeIcon,
   EyeOffIcon,
+  LoaderIcon,
   LockKeyholeOpenIcon,
   MailIcon,
 } from "lucide-react";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { authClient } from "@/lib/auth-client";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { error } from "console";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { FaGithub } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import { toast } from "sonner";
+import z from "zod";
 
 export const loginSchema = z.object({
   email: z.email({ error: "Please provide a valid email" }),
@@ -49,6 +49,8 @@ export const LoginForm = () => {
 
   const [errMesg, setErrMesg] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [oauthGoogleLoading, setOauthGoogleLoading] = useState<boolean>(false);
+  const [oauthGithubLoading, setOauthGithubLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -95,14 +97,19 @@ export const LoginForm = () => {
 
   const handleSocialSignIn = async (provider: "google" | "github") => {
     setErrMesg(null);
-    setLoading(true);
+    if (provider === "google") {
+      setOauthGoogleLoading(true);
+    } else {
+      setOauthGithubLoading(true);
+    }
 
     const { error } = await authClient.signIn.social({
       provider,
       callbackURL: "/dashboard",
     });
 
-    setLoading(false);
+    setOauthGoogleLoading(false);
+    setOauthGithubLoading(false);
 
     if (error) {
       setErrMesg(error.message ?? "Something went wrong!");
@@ -196,7 +203,9 @@ export const LoginForm = () => {
                     </p>
                   )}
                   <Button
-                    disabled={loading}
+                    disabled={
+                      loading || oauthGithubLoading || oauthGoogleLoading
+                    }
                     type='submit'
                     className='w-full mt-5'
                   >
@@ -217,7 +226,11 @@ export const LoginForm = () => {
                   variant={"outline"}
                   className='flex-1'
                 >
-                  <FcGoogle />
+                  {oauthGoogleLoading ? (
+                    <LoaderIcon className='animate-spin' />
+                  ) : (
+                    <FcGoogle />
+                  )}
                   Google
                 </Button>
                 <Button
@@ -226,7 +239,11 @@ export const LoginForm = () => {
                   variant={"outline"}
                   className='flex-1'
                 >
-                  <FaGithub />
+                  {oauthGithubLoading ? (
+                    <LoaderIcon className='animate-spin' />
+                  ) : (
+                    <FaGithub />
+                  )}
                   GitHub
                 </Button>
               </div>
