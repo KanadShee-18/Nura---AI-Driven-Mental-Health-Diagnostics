@@ -66,38 +66,49 @@ export const healthCheckUp = async (
       }
     );
 
-    const { predicted_mood_swings, treatment_needed } = resp.data;
+    console.log("Response from model api: ", resp.data);
 
-    await prisma.checkUp.create({
-      data: {
-        userId: user.id,
-        gender: data.gender,
-        occupation: data.occupation,
-        selfEmployed: data.selfEmployed,
-        familyHistory: data.familyHistory,
-        pastHistory: data.pastHistory,
-        spendIndoors: data.spendIndoors,
-        habitChange: data.habitChange,
-        increasingStressLevel: data.increasingStressLevel,
-        sociallyWeak: data.sociallyWeak,
-        faceDailyProblem: data.faceDailyProblem,
-        findInterestInWork: data.findInterestInWork,
-        takenMentalHealthInterview: data.takenMentalHealthInterview,
-        awareAboutCareOption: data.awareAboutCareOption,
-        condition: predicted_mood_swings,
-        treatment: treatment_needed,
-      },
-    });
+    const { predicted_mood_swings, treatment_needed, success } = resp.data;
 
-    revalidatePath("/dashboard");
+    console.log({ predicted_mood_swings, treatment_needed, success });
+
+    if (success) {
+      await prisma.checkUp.create({
+        data: {
+          userId: user.id,
+          gender: data.gender,
+          occupation: data.occupation,
+          selfEmployed: data.selfEmployed,
+          familyHistory: data.familyHistory,
+          pastHistory: data.pastHistory,
+          spendIndoors: data.spendIndoors,
+          habitChange: data.habitChange,
+          increasingStressLevel: data.increasingStressLevel,
+          sociallyWeak: data.sociallyWeak,
+          faceDailyProblem: data.faceDailyProblem,
+          findInterestInWork: data.findInterestInWork,
+          takenMentalHealthInterview: data.takenMentalHealthInterview,
+          awareAboutCareOption: data.awareAboutCareOption,
+          condition: predicted_mood_swings,
+          treatment: treatment_needed,
+        },
+      });
+
+      revalidatePath("/dashboard");
+
+      return {
+        success: true,
+        message: "Check up completed successfully!",
+        data: {
+          condition: predicted_mood_swings,
+          treatment: treatment_needed,
+        },
+      };
+    }
 
     return {
-      success: true,
-      message: "Check up completed successfully!",
-      data: {
-        condition: predicted_mood_swings,
-        treatment: treatment_needed,
-      },
+      success: false,
+      message: "Some error occurred while check up!",
     };
   } catch (error) {
     console.error(error);

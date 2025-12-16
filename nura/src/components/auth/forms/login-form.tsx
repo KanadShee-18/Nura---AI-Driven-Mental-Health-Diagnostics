@@ -157,26 +157,26 @@ export const LoginForm = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <div className='w-full h-fit relative'>
+                            <span className='absolute top-1/2 -translate-y-1/2 left-2.5'>
+                              <LockKeyholeOpenIcon className='size-4 text-indigo-500' />
+                            </span>
+                            <span
+                              onClick={() => setShowPassword((prev) => !prev)}
+                              className='absolute top-1/2 -translate-y-1/2 right-3'
+                            >
+                              {showPassword ? (
+                                <>
+                                  <EyeIcon className='size-4 text-indigo-500' />
+                                </>
+                              ) : (
+                                <>
+                                  <EyeOffIcon className='size-4 text-indigo-500' />
+                                </>
+                              )}
+                            </span>
 
-                        <div className='w-full h-fit relative'>
-                          <span className='absolute top-1/2 -translate-y-1/2 left-2.5'>
-                            <LockKeyholeOpenIcon className='size-4 text-indigo-500' />
-                          </span>
-                          <span
-                            onClick={() => setShowPassword((prev) => !prev)}
-                            className='absolute top-1/2 -translate-y-1/2 right-3'
-                          >
-                            {showPassword ? (
-                              <>
-                                <EyeIcon className='size-4 text-indigo-500' />
-                              </>
-                            ) : (
-                              <>
-                                <EyeOffIcon className='size-4 text-indigo-500' />
-                              </>
-                            )}
-                          </span>
-                          <FormControl>
                             <Input
                               type={showPassword ? "text" : "password"}
                               placeholder='Enter correct password'
@@ -184,9 +184,9 @@ export const LoginForm = () => {
                               disabled={isPending || loading}
                               className='pl-10'
                             />
-                          </FormControl>
-                          <FormMessage />
-                        </div>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />

@@ -163,9 +163,6 @@ export const RegisterForm = () => {
                         <FormLabel>Email</FormLabel>
                         <FormControl>
                           <div className='w-full h-fit relative'>
-                            <span className='absolute top-1/2 -translate-y-1/2 left-2.5'>
-                              <MailIcon className='size-4 text-indigo-500' />
-                            </span>
                             <Input
                               type='email'
                               placeholder='Provide a valid email'
@@ -173,6 +170,9 @@ export const RegisterForm = () => {
                               disabled={isPending}
                               className='pl-10'
                             />
+                            <span className='absolute top-1/2 -translate-y-1/2 left-2.5'>
+                              <MailIcon className='size-4 text-indigo-500' />
+                            </span>
                           </div>
                         </FormControl>
                         <FormMessage />
@@ -186,11 +186,11 @@ export const RegisterForm = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Password</FormLabel>
-                        <div className='w-full h-fit relative'>
-                          <span className='absolute top-1/2 -translate-y-1/2 left-2.5'>
-                            <LockKeyholeOpenIcon className='size-4 text-indigo-500' />
-                          </span>
-                          <FormControl>
+                        <FormControl>
+                          <div className='w-full h-fit relative'>
+                            <span className='absolute top-1/2 -translate-y-1/2 left-2.5'>
+                              <LockKeyholeOpenIcon className='size-4 text-indigo-500' />
+                            </span>
                             <Input
                               placeholder='Enter a strong password'
                               type='password'
@@ -198,9 +198,9 @@ export const RegisterForm = () => {
                               disabled={isPending}
                               className='pl-10'
                             />
-                          </FormControl>
-                          <FormMessage />
-                        </div>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />

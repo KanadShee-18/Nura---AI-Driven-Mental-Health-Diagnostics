@@ -99,6 +99,7 @@ def predict_condition(data: PatientData, x_api_key: str = Header(None)):
         treatment = le_treatment.inverse_transform([treat_idx])[0]
         
         return {
+            "success": True,
             "predicted_mood_swings": mood,
             "treatment_needed": treatment
         }

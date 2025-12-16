@@ -101,14 +101,68 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
       <h2 className='text-2xl font-semibold text-transparent bg-clip-text bg-linear-to-r dark:from-blue-300 from-blue-500 dark:via-teal-400 via-teal-600 dark:to-slate-300 to-slate-600'>
         Mental Well-Being Assessment
       </h2>
-      {result && (
+      {/* {result && (
         <div className='flex flex-col gap-y-2.5'>
           <p>{result.condition}</p>
           <p>{result.treatment}</p>
         </div>
-      )}
+      )} */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+          {result && (
+            <motion.div
+              key='result'
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className='space-y-6 mb-10 p-4 shadow-sm dark:bg-neutral-200bg-neutral-900  rounded-md'
+            >
+              <div className='p-4 rounded-lg bg-green-500/10 border border-green-500/40 flex items-start gap-3'>
+                <CheckCircle2 className='w-5 h-5 text-green-500 mt-0.5' />
+                <div>
+                  <h4 className='font-semibold text-green-700 dark:text-green-400'>
+                    Analysis Complete
+                  </h4>
+                  <p className='text-sm text-green-600/90 dark:text-green-400/90 mt-1'>
+                    Based on your responses, our model indicates that your
+                    condition/mood-swing-level is:{" "}
+                    <strong>{result.condition}</strong>.
+                  </p>
+                </div>
+              </div>
+
+              <div className='space-y-3'>
+                <h4 className='text-sm font-medium text-muted-foreground'>
+                  Analysis
+                </h4>
+                <div className='space-y-2'>
+                  <div className='flex items-center gap-3 p-3 rounded-md bg-muted/50 border'>
+                    <span className='text-sm'>Treatment Needed: </span>
+                    <div className='w-8 h-8 rounded-sm shadow bg-blue-500/10 flex items-center justify-center text-blue-500'>
+                      {result.treatment}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {errMesg && (
+            <motion.div
+              key='error'
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className='space-y-6'
+            >
+              <div className='p-4 rounded-lg bg-rose-500/10 border border-rose-500/40 flex items-start gap-3'>
+                <CheckCircle2 className='w-5 h-5 text-rose-400 mt-0.5' />
+                <div>
+                  <p className='text-sm text-rose-600/90 dark:text-rose-400/90 mt-1'>
+                    {errMesg}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
           <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
             {/* Gender Field */}
             <FormField
@@ -458,60 +512,6 @@ export const CheckUpForm = ({ userId }: { userId: string }) => {
               )}
             />
           </div>
-
-          {result && (
-            <motion.div
-              key='result'
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className='space-y-6'
-            >
-              <div className='p-4 rounded-lg bg-green-500/10 border border-green-500/40 flex items-start gap-3'>
-                <CheckCircle2 className='w-5 h-5 text-green-500 mt-0.5' />
-                <div>
-                  <h4 className='font-semibold text-green-700 dark:text-green-400'>
-                    Analysis Complete
-                  </h4>
-                  <p className='text-sm text-green-600/90 dark:text-green-400/90 mt-1'>
-                    Based on your inputs, our model predict that, you have:{" "}
-                    {result.condition}
-                  </p>
-                </div>
-              </div>
-
-              <div className='space-y-3'>
-                <h4 className='text-sm font-medium text-muted-foreground'>
-                  Analysis
-                </h4>
-                <div className='space-y-2'>
-                  <div className='flex items-center gap-3 p-3 rounded-md bg-muted/50 border'>
-                    <span className='text-sm'>Treatment Needed: </span>
-                    <div className='w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500'>
-                      {result.treatment}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {errMesg && (
-            <motion.div
-              key='error'
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className='space-y-6'
-            >
-              <div className='p-4 rounded-lg bg-rose-500/10 border border-rose-500/40 flex items-start gap-3'>
-                <CheckCircle2 className='w-5 h-5 text-rose-400 mt-0.5' />
-                <div>
-                  <p className='text-sm text-rose-600/90 dark:text-rose-400/90 mt-1'>
-                    {errMesg}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          )}
 
           <Button
             disabled={loading}

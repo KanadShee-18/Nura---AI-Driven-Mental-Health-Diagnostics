@@ -169,8 +169,8 @@ export const TestimonialImage = () => {
                   </div>
                 </div>
 
-                <div className='text-muted-foreground animate-pulse'>
-                  ... and more ...
+                <div className='text-muted-foreground text-sm animate-pulse'>
+                  and more ...
                 </div>
               </motion.div>
             )}
